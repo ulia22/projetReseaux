@@ -14,6 +14,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <regex.h>
 
 #include "clientData.h"
 
@@ -31,7 +32,7 @@ void *manageClient(void* par);
  */
 int main(int argc, char** argv) {
     
-    printf("This is a test.\n");
+    printf("Server running...\n");
     //Definition des variables pour acceder aux threads
     pthread_t client_t;
     //Definition des variables pour ouvrir les connections.
@@ -49,7 +50,7 @@ int main(int argc, char** argv) {
     memset(&server_addr, 0, sizeof(struct sockaddr_in));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
-    inet_aton("127.0.0.1", &server_addr.sin_addr.s_addr);
+    inet_aton("10.5.8.23", &server_addr.sin_addr.s_addr);
     client_addr_size = sizeof(struct sockaddr_in);
     
     //Lie la socket server à une adresse ip et un port.
@@ -61,7 +62,7 @@ int main(int argc, char** argv) {
     if(listen(sdServerAccept, LISTEN_LIMIT) == -1){
         perror("Erreur listen.\n");
         exit(EXIT_FAILURE);}
-    printf("Test2\n");
+    
     //Accepte les connections entrante et laisse la gestion à un nouveau thread.
     while(1){
         sdClient = accept(sdServerAccept, (struct sockaddr *)&client_addr, &client_addr_size);
@@ -74,7 +75,6 @@ int main(int argc, char** argv) {
             perror("Erreur lancement d'un thread.\n");
             exit(EXIT_FAILURE);
         }
-        printf("Test1\n");
     }
     return (EXIT_SUCCESS);
 }
@@ -94,10 +94,15 @@ void *manageClient(void* par){
         
         memset(buffer, 0, MSG_BUFFER_SIZE);       
 	recv(sdClient, buffer, 3, 0);
-        printf("Bonjour code message %s \n.", buffer);
-        
+        printf("Message : %s\n", buffer);
         if(strncmp(buffer, "100", 3) == 0){//Nouveau client
-            
+            //On lit les arguments du message en entier.
+            memset(buffer, 0, MSG_BUFFER_SIZE);       
+            recv(sdClient, buffer, 15+5+3, 0);/*longueur addrIp + longueur port + 1 '/' et 1 espace + 1 caractère \0.*/
+            if(initClientConnect(sdClient, buffer) != 0){
+                printf("Erreur initClientConnect.\n");
+                exit(EXIT_FAILURE);
+            }
         }else if(strncmp(buffer, "200", 3) == 0){//Partage d'un fichier
             
         }else if(strncmp(buffer, "300", 3) == 0){//DL d'un fichier
@@ -110,3 +115,99 @@ void *manageClient(void* par){
     pthread_exit((void*)id_t);
 }
 
+int initClientConnect (int sdClient, char* msg){
+    
+    printf("%s\n", msg);
+    //Preparation de l'extraction de l'addresse
+    char addrIp[16] = {'\0'};
+    char port[6] = {'\0'};
+    if(extractIpPort(msg, addrIp, port) == -1){
+        perror("Erreur extractIpPort.\n");
+        exit(EXIT_FAILURE);
+    }
+     return 0;
+}
+
+
+
+/**
+ * Permet d'extraire l'addresse ip et le port d'une chaine si ils sont sous la forme " ip/port".
+ * @param msg contenant l'addrIp/Port
+ * @param port chaine qui contiendra le port
+ * @param ip chaine qui contiendra l'addrIp
+ * @return 0 si reussi -1 sinon
+ */
+int extractIpPort(char* msg, char* port, char* ip){
+    regex_t preg;
+    char str_regex[] = "^ *([[:digit:]\\.]+)\\([:digit:]{1,6})"; 
+    int err = 0;
+    
+    err = regcomp (&preg, str_regex, REG_EXTENDED);
+    if(err != 0){
+        fprintf(stderr, "Erreur compilation regex addr/port.\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    int match;
+    size_t nmatch = 0;
+    regmatch_t *pmatch = NULL;
+ 
+    nmatch = preg.re_nsub;
+    pmatch = malloc (sizeof (*pmatch) * nmatch);
+    
+    
+    //Lecture du message, on recherche l'addrIP et le port.
+    
+    // Recherche d'occurences.
+     match = regexec (&preg, msg, nmatch, pmatch, 0);
+     regfree (&preg);
+   
+     //Si la chaine est reconnue.
+     if (match == 0)
+         {
+            //Extraction de l'adresse IP.
+            int startIp = pmatch[0].rm_so;
+            int endIp = pmatch[0].rm_eo;
+            size_t sizeIp = endIp - startIp;
+
+            if (ip)
+            {
+               strncpy (ip, &msg[startIp], sizeIp);
+               ip[sizeIp] = '\0';
+            }
+            
+            //Extraction du port.
+            int startPort = pmatch[1].rm_so;
+            int endPort = pmatch[1].rm_eo;
+            size_t sizePort = endPort - startPort;
+            
+            if (port)
+            {
+               strncpy (port, &msg[startPort], sizePort);
+               port[sizePort] = '\0';
+            }
+            printf ("Nouveau pair à l'adresse IP : %s:%s\n", ip,port);
+         }else if(match == REG_NOMATCH){
+                fprintf(stderr, "Pas de correspondance avec la regex.\n");
+                return -1;
+         }else{
+            char *text;
+            size_t size;
+
+            size = regerror (err, &preg, NULL, 0);
+            text = malloc (sizeof (*text) * size);
+            if (text)
+            {
+/* (8) */
+               regerror (err, &preg, text, size);
+               fprintf (stderr, "%s\n", text);
+               free (text);
+            }
+            else
+            {
+               fprintf (stderr, "Memoire insuffisante\n");
+               exit (EXIT_FAILURE);
+            }
+         }
+     return 0;
+}
