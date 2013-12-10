@@ -31,6 +31,7 @@ void *manageClient(void* par);
  */
 int main(int argc, char** argv) {
     
+    printf("This is a test.\n");
     //Definition des variables pour acceder aux threads
     pthread_t client_t;
     //Definition des variables pour ouvrir les connections.
@@ -60,20 +61,20 @@ int main(int argc, char** argv) {
     if(listen(sdServerAccept, LISTEN_LIMIT) == -1){
         perror("Erreur listen.\n");
         exit(EXIT_FAILURE);}
-    
-    //Accepte les connection entrante et laisse la gestion à un nouveau thread.
+    printf("Test2\n");
+    //Accepte les connections entrante et laisse la gestion à un nouveau thread.
     while(1){
         sdClient = accept(sdServerAccept, (struct sockaddr *)&client_addr, &client_addr_size);
         if(sdClient == -1){
-            perror("Erreur accept."); 
+            perror("Erreur accept.\n"); 
             exit(EXIT_FAILURE);}
         
         //Crée le thread qui va s'occuper du client.
         if(pthread_create(&client_t, NULL, manageClient, (void*) &sdClient) != 0){
-            perror("Erreur lancement d'un thread.");
+            perror("Erreur lancement d'un thread.\n");
             exit(EXIT_FAILURE);
         }
-        
+        printf("Test1\n");
     }
     return (EXIT_SUCCESS);
 }
@@ -93,9 +94,10 @@ void *manageClient(void* par){
         
         memset(buffer, 0, MSG_BUFFER_SIZE);       
 	recv(sdClient, buffer, 3, 0);
+        printf("Bonjour code message %s \n.", buffer);
         
         if(strncmp(buffer, "100", 3) == 0){//Nouveau client
-             
+            
         }else if(strncmp(buffer, "200", 3) == 0){//Partage d'un fichier
             
         }else if(strncmp(buffer, "300", 3) == 0){//DL d'un fichier

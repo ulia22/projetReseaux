@@ -25,7 +25,8 @@ int initClientData(){
     struct dirent *lecture;
     DIR *rep;
     int exist = 0;
-    char path[255] = {'\0'};
+    char path[1000] = {'\0'};
+    
     rep = opendir("." );
     while ((lecture = readdir(rep))) {
         if(strcmp(lecture->d_name, META_DATA_DIR) == 0 && lecture->d_type == DT_DIR){
@@ -37,13 +38,14 @@ int initClientData(){
     strcat(path, META_DATA_DIR);
     if(exist != 0){//Si le dossier n'existe pas, on le crée.
         if(mkdir(path, 0666) == -1){
-            perror("Erreur création du repertoire des meta-data");
+            perror("Erreur création du repertoire des meta-data.");
             exit(EXIT_FAILURE);
         }
     }
+    
     closedir(rep);
     
-    //Regard initialisation des paires 
+    //Initialisation des paires IP/CléPair
     
     
     
