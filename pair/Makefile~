@@ -1,0 +1,7 @@
+LDLIBS = -lpthread
+
+createur : pair.o
+	gcc -o $@ $^ $(LDLIBS)
+createur.o : pair.c
+	gcc -o pair.o -c pair.c
+

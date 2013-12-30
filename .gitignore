@@ -1,2 +1,8 @@
 /server/serverShareFile/build/
 /server/serverShareFile/dist/
+/test/testPair/build/
+/test/testPair/dist/
+/test/testServ/dist/
+/test/testServ/build/
+/server/Server/build/
+/server/Server/dist/
