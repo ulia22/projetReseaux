@@ -13,7 +13,7 @@ extern "C" {
 #endif
 int initFileData();
 int getNewClePair(void);
-
+int sendMetaFile(int sdClient, char *name, char *prefix);
 
 #ifdef	__cplusplus
 }

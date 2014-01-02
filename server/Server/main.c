@@ -59,12 +59,18 @@ void *manageClient(void* par[]) {
     int sdClient = ((acceptThreadArg*) par)->sock;
     struct sockaddr_in client_addr = ((acceptThreadArg*) par)->pair;
     char buffer[MSG_BUFFER_SIZE];
+    int ret = 0;
+    
     printf("sock: %d\n", sdClient);
     while (strncmp(buffer, "909", 3) != 0) {
 
         //Lecture du code du message.
         memset(buffer, 0, MSG_BUFFER_SIZE);
-        recv(sdClient, buffer, 3, 0);
+        ret = recv(sdClient, buffer, 3, 0);
+        if(ret == -1){
+            strcat(buffer, "909");
+        }
+        
         printf("Buffer: %s\n", buffer);
         if (strncmp(buffer, "100", 3) == 0) {//Nouveau client
             if (initClientConnect(sdClient, client_addr) != 0) {
@@ -72,9 +78,15 @@ void *manageClient(void* par[]) {
                 exit(EXIT_FAILURE);
             }
         } else if (strncmp(buffer, "200", 3) == 0) {//Partage d'un fichier
-
+           if(shareFile(sdClient, client_addr) != 0){
+            printf("Erreur partage fichier.\n");
+            exit(EXIT_FAILURE);
+           }
         } else if (strncmp(buffer, "300", 3) == 0) {//DL d'un fichier
-
+            if(dlFile(sdClient, client_addr) != 0){
+                printf("Erreur DL fichier.\n");
+                exit(EXIT_FAILURE);
+            }
         } else if (strncmp(buffer, "400", 3) == 0) {//Mise a jour meta-data
 
         }

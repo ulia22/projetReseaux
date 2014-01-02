@@ -32,11 +32,12 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
 
     //Preparation de l'extraction de l'addresse
     res = extract(buffer, PATTERN_IP_PORT);
-    char addrIp[16]; //En cour de modif
+    char* addrIp = NULL;
     addrIp = (char *) inet_ntoa(client_addr.sin_addr.s_addr);
-    int port = (unsigned int) ntohs(client_addr.sin_port);
+    int port = atoi(res[4]);
     printf("Pair connecté à l'addresse: %s , et au port: %u.\n", addrIp, port);
-
+    freeExtract(res, 5);
+    
     //Envoi message ok.
     memset(buffer, '\0', strlen(buffer));
     strcat(buffer, "901\0");
@@ -65,6 +66,7 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
         } else {
             printf("ptrPair est NULL");
         }
+        freeExtract(res, 3);
         
         memset(buffer, 0, strlen(buffer));
         strcat(buffer, "901");
@@ -77,7 +79,7 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
         memset(keys, 0, 10);
         sprintf(keys, "%d", key);
         addPair(keys, addrIp, port);
-        printf("%d", ptrPair->clePair);
+        printf("Clé pair existante : %d.\n", ptrPair->clePair);
         
         memset(buffer, 0, strlen(buffer));
         sprintf(buffer, "103 %d", key);
@@ -89,6 +91,114 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
     }
     return 0;
 }
+
+/**
+ * Permet de donner à un client la liste des autres client connectés.
+ * @param sdClient
+ * @param client_addr
+ * @return 0 si ok
+ */
+int shareFile(int sdClient, struct sockaddr_in client_addr){
+    char buffer[MSG_BUFFER_SIZE];
+    char* addrIp = NULL;
+    int port = 0, totalLenght = 0;
+    pair* curPtr = NULL;
+    char* addrFile = NULL;
+    int newCleFile = 0;
+    
+    addrIp = (char *) inet_ntoa(client_addr.sin_addr.s_addr);
+    port = ntohs(client_addr.sin_port);
+    
+    memset(buffer, 0, MSG_BUFFER_SIZE);
+    recv(sdClient, buffer, MSG_BUFFER_SIZE, 0);
+    
+    //Préparation du message de retour.
+    //envoi message "201 newCleFile "+"addr/port\n"....
+    //On calcule d'abord la longueur totale du message, que l'on stocke dans totalLenght.
+    for(curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next){
+        if(strcmp(curPtr->addrPair, addrIp) != 0){
+            totalLenght += strlen(curPtr->addrPair);//Longueur de cette addresseIp
+            totalLenght ++;// le "/" pour séparateur.
+            memset(buffer, 0, MSG_BUFFER_SIZE);
+            sprintf(buffer, "%d", curPtr->portPair);
+            totalLenght += strlen(buffer); // longueur du port d'ecoute du pair.
+            totalLenght ++;//\n final entre 2 pairs.
+        }
+    }
+    totalLenght += 5; //ajout du "201 " au début et "\0" à la fin.
+    
+    //On ajoute la nouvelle newCleFile cleFile
+    newCleFile = getNewCleFile();
+    memset(buffer, 0, MSG_BUFFER_SIZE);
+    sprintf(buffer, "%d", newCleFile);
+    totalLenght += strlen(buffer);
+    
+    totalLenght ++;//Ajout de l'espace entre newCleFile et addr
+    
+    //On alloue la mémoire.
+    addrFile = malloc(sizeof(char) * totalLenght);
+    memset(addrFile, 0, totalLenght);
+    
+    //On crée le message de retour.
+    strcat(addrFile, "201 ");
+    strcat(addrFile, buffer);
+    strcat(addrFile, " ");
+    for(curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next){
+        if(strcmp(curPtr->addrPair, addrIp) != 0){
+            strcat(addrFile, curPtr->addrPair);//addresseIp
+            strcat(addrFile, "/");// "/" séparateur.
+            memset(buffer, 0, MSG_BUFFER_SIZE);
+            sprintf(buffer, "%d", curPtr->portPair);
+            strcat(addrFile, buffer);//port
+            strcat(addrFile, "\n");
+        }
+    }
+    
+    send(sdClient, addrFile, totalLenght, 0);
+    free(addrFile);
+    
+    //Reception du fichier de meta-data de retour.
+    memset(buffer, 0, MSG_BUFFER_SIZE);
+    recv(sdClient, buffer, 4, 0);
+    
+    if(strncmp(buffer, "202", 3)){//On recois le nouveau message de demande d'envoi des metadata.  
+        newMetaDataFile(newCleFile, sdClient); //On sauve le nouveau metadata envoyé sur le server.
+        
+        memset(buffer, 0, MSG_BUFFER_SIZE);
+        sprintf(buffer, "901 ");
+    }
+    
+    return 0;
+}
+
+/**
+ * Permet de donner à un client la liste des autre clients possédant un partis du fichier cléFichier. ou la liste des fichiers disponnibles à télécharger.
+ * @param sdClient
+ * @param client_addr
+ * @return 
+ */
+int dlFile(int sdClient, struct sockaddr_in client_addr){
+    char buffer[MSG_BUFFER_SIZE];
+    char *addrIp, *path;
+    int port, totalLenght = 0;
+    char** res;
+    
+    addrIp = (char *) inet_ntoa(client_addr.sin_addr.s_addr);
+    port = ntohs(client_addr.sin_port);
+    
+    memset(buffer, 0, MSG_BUFFER_SIZE);
+    recv(sdClient, buffer, MSG_BUFFER_SIZE, 0);
+    
+    res = extract(buffer, PATTERN_CLE_PAIR);
+    
+    //Création du path du fichier à ouvrir
+    if(metaFileExist(res[2]) == 1){//Si le fichier existe, on recupère le contenu et on l'envoi.
+        sendMetaFile(sdClient, res[2], "301 ");
+    }
+    
+    return 0;
+}
+
 
 /**
  * Extrait les données d'un message suivant un pattern et les retourne dans un tableau.
@@ -157,7 +267,26 @@ char** extract(const char* msg, const char* pattern) {
     return res;
 }
 
-
+/**
+ * Permet de libérer la mémoire utilisée par la fonction extract et retourné dans un char**
+ * @param res tableau à libérer
+ * @param nmatch nombre d'élément du tableau (première dimension)
+ * 
+ * @return 0 si ok -1 si probleme
+ */
+int freeExtract(char** res, int nmatch){
+    if(res == NULL){
+        return 0;
+    }
+    int i = 0;
+    for(i = 0; i < nmatch; i++){
+        free(res[i]);
+    }
+    free(res);
+    res = NULL;
+    return 0;
+    
+}
 
 
 /*******************************************
