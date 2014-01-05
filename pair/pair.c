@@ -10,9 +10,12 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "pair.h"
+
 #define MAX_MSG 1024
 #define MAX_CONNEXIONS 10
 #define PORT 44444
+#define TAILLE_CLE_PAIR 10
 
 void* ecouteRequetes(void* arg);
 void* gestionConnexion(void* arg);
@@ -20,10 +23,16 @@ void* envoyerPartition(void* arg);
 void* importerFichier(void* arg);
 void* obtenirPartition(void* arg);
 
+char* getFichier (char* cle);
+ListePair* getListePairFichier(char* metadata);
+void enregistrerFichier(char* nom, char* contenu);
 int possedeFichier(char* cleFichier);
 pthread_t lancerDaemon();
 void inviteDeCommandes();
 void initConnexion();
+char* getClePair();
+int enregistrerNouvelleCle(char* cle);
+
 
 
 int main (int argc, char *argv[]) {
@@ -95,6 +104,7 @@ void* gestionConnexion(void* arg) {
         if (strcmp("302", numMsg) == 0) { // as tu une partition de ce fichier
             if(possedeFichier(argm)) { // cle fichier en parametre
                 char rep[MAX_MSG] = "907";
+
                 if(send(desCli, rep, strlen(rep), 0) < 0) {
                     perror("erreur send");
                     exit(EXIT_FAILURE);
@@ -102,6 +112,15 @@ void* gestionConnexion(void* arg) {
             } else {
                 char rep[MAX_MSG] = "908";
                 if(send(desCli, rep, strlen(rep), 0) < 0) {
+                    perror("erreur send");
+                    exit(EXIT_FAILURE);
+                }
+            }
+        } else if (strcmp("500", numMsg) == 0) { // demande d'un fichier a envoyer pour un pair
+            if(possedeFichier(argm)) {
+                char partition[MAX_MSG] = "501 ";
+                strcat(partition, getFichier(argm));
+                if(send(desCli, partition, strlen(partition), 0) < 0) { //envoi du message 501 contenudufichier
                     perror("erreur send");
                     exit(EXIT_FAILURE);
                 }
@@ -147,7 +166,7 @@ void* importerFichier(void* arg) {
         perror("erreur envoi");
         exit(EXIT_FAILURE);
     }
-    printf("message envoyé\n");
+
 
     char msgRecv[MAX_MSG];
 
@@ -157,20 +176,51 @@ void* importerFichier(void* arg) {
     }
 
     char* numMsg = strtok(msgRecv, " /");
-    if (strcmp("301", numMsg) == 0) { // reception d un pair ayant ce fichier
-        char* ip = strtok(NULL, " /");
-        char* port = strtok(NULL, " /");
+    if (strcmp("301", numMsg) == 0) { // reception de la liste des pairs ayant une partition
+        /*char* ip = strtok(NULL, " /");
+        char* port = strtok(NULL, " /");*/
+        char* metadata = strtok(msgRecv, " ");
+        ListePair *pairs = getListePairFichier(metadata);
 
-        struct sockaddr_in addPair;
-        addPair.sin_family = AF_INET;
-        add.sin_addr.s_addr = inet_addr(ip);
-        add.sin_port = ntohs((uint16_t)port);
 
-        pthread_create(&th, NULL, obtenirPartition, (void*)&addPair);
+        Pair *p = pairs->prem;
+        char* part;
+        char* ip;
+        char* port;
+        int recu = 0;
+        //int part_traites[] = {0}
+        //TODO gerer les partitions : recuperer le nombre de partitions
+        while (p->suiv != NULL && !recu) {
+            part = strtok(p->data, " ");
+            ip = strtok(NULL, " ");
+            port = strtok(NULL, " ");
 
-        void* partition;
-        if (pthread_join(th, partition) != 0) {
-            perror("erreur join");
+            struct sockaddr_in addPair;
+            addPair.sin_family = AF_INET;
+            add.sin_addr.s_addr = inet_addr(ip);
+            add.sin_port = ntohs((uint16_t)port);
+
+            ParamPartition *params;
+            params->add = addPair;
+            params->cleFichier = nomFichier; // TODO : recuperer la clé du fichier plutot que le nom (faire en sorte que le serveur l'envoi ?
+
+
+            pthread_create(&th, NULL, obtenirPartition, (void*)&params);
+
+            void* partition;
+            if (pthread_join(th, partition) != 0) {
+                perror("erreur join");
+                exit(EXIT_FAILURE);
+            }
+
+            if((char*)partition != "") {
+                enregistrerFichier(nomFichier, partition);
+                recu = 1;
+            }
+            p = p->suiv;
+        }
+        if (!recu) { // pas de fichier telechargé
+            printf("Impossible de telecharger le fichier\n");
         }
     }
 
@@ -182,23 +232,41 @@ void* importerFichier(void* arg) {
 }
 
 void* obtenirPartition(void* arg) {
-    struct sockaddr_in* addClient = (struct sockaddr_in*)arg;
+    ParamPartition *params = (ParamPartition*)arg;
+    //struct sockaddr_in* addClient = (struct sockaddr_in*)arg;
     int sock = socket(PF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror( "erreur socket");
         exit(EXIT_FAILURE);
     }
 
-    if (connect(sock, (struct sockaddr*)&addClient, sizeof(addClient)) < 0) {
+    if (connect(sock, (struct sockaddr*)&params->add, sizeof(&params->add)) < 0) {
         perror("erreur connect");
         exit(EXIT_FAILURE);
     }
 
-    char partition[MAX_MSG];
+    char msgDemandeFichier[MAX_MSG];
+    strcat(msgDemandeFichier, "500 ");
+    strcat(msgDemandeFichier, params->cleFichier);
 
-    if (recv(sock, partition, MAX_MSG, 0) < 0) {
+    if (send(sock, msgDemandeFichier, strlen(msgDemandeFichier), 0) < 0) { //demande telechargement fichier
+        perror("erreur envoi");
+        exit(EXIT_FAILURE);
+    }
+
+
+    char msgPartition[MAX_MSG];
+
+    if (recv(sock, msgPartition, MAX_MSG, 0) < 0) { // reception de la partition
         perror("erreur reception");
         exit(EXIT_FAILURE);
+    }
+
+    char* partition = "";
+
+    char* codeMsg = strtok(partition, " ");
+    if (strcmp(codeMsg, "501") == 0) { //
+         partition = strtok(NULL, " ");
     }
 
 	if (close(sock) < 0) {
@@ -209,7 +277,114 @@ void* obtenirPartition(void* arg) {
     pthread_exit((void*)partition);
 }
 
+//---------------UPLOAD-------------------------------------
+
+/*void* exporterFichier(void* path) {
+    char* nom = (char*)path;
+    char contenu[MAX_MSG];
+    contenu = ouvrirFichier(path); //TODO fonction a implementer
+    if (contenu != "") {
+
+        int sock = socket(PF_INET, SOCK_STREAM, 0);
+
+        if (sock < 0) {
+            perror("erreur socket");
+            exit(EXIT_FAILURE);
+        }
+
+        struct sockaddr_in add;
+        add.sin_family = AF_INET;
+        add.sin_addr.s_addr = inet_addr("10.5.8.23");
+        add.sin_port = ntohs(PORT);
+
+        if (connect(sock, (struct sockaddr*)&add, sizeof(add)) < 0) {
+            perror("erreur connect");
+            exit(EXIT_FAILURE);
+        }
+
+        char msgDemandePairs[MAX_MSG] = "200";
+
+
+        if (send(sock, msgDemandePairs, strlen(msg), 0) < 0) { //demande liste de pair connectés
+            perror("erreur envoi");
+            exit(EXIT_FAILURE);
+        }
+
+        char msgListePairs[MAX_MSG];
+        if (recv(sock, msgListePairs, MAX_MSG, 0) < 0) {
+            perror("erreur reception");
+            exit(EXIT_FAILURE);
+        }
+
+        //if (strcmp(msgListePairs, "") == 0)
+
+
+    } else {
+        printf("Fichier introuvable");
+    }
+}*/
+
+
 //FONCTIONS ----------------------------------------------------
+
+char* getFichier (char* cle) {
+    char* contenu = malloc(sizeof(MAX_MSG));
+
+    char* fileNameData;
+    strcpy(fileNameData, cle);
+    strcat(fileNameData, ".part");
+
+    FILE *f = NULL;
+    f = fopen(fileNameData, "r");
+
+
+    if (f != NULL) {
+        char tmp[8] = "";
+        int car = 0;
+        do {
+            car = fgetc(f);
+            sprintf(tmp,"%d", car);
+            strcat(contenu, tmp);
+            tmp[0] ='\0';
+
+        } while (car != EOF);
+
+        fclose(f);
+    }
+    return contenu;
+}
+
+ListePair* getListePairFichier(char* metadata) {
+    ListePair *pairs = malloc(sizeof(*pairs));
+    Pair *pair = malloc(sizeof(*pair));
+    char* str = strtok (metadata, "\n");
+    pair->data = str;
+    pair->suiv = NULL;
+    pairs->prem = pair;
+    while (str != NULL) {
+        str = strtok (NULL, "\n");
+        Pair *p = pairs->prem;
+        int added = 0;
+        while (!added) {
+            if(p->suiv == NULL) {
+                p->suiv->data = str;
+                added = 1;
+            } else {
+                p = p->suiv;
+            }
+        }
+    }
+    return pairs;
+}
+
+void enregistrerFichier(char* nom, char* contenu) {
+    FILE *f = NULL;
+    f = fopen(nom, "w");
+    if (f != NULL) {
+        fputs(contenu, f);
+        fclose(f);
+    }
+}
 
 int possedeFichier(char* cleFichier) {
     char* fileNameData;
@@ -220,8 +395,10 @@ int possedeFichier(char* cleFichier) {
     strcpy(fileNamePart, cleFichier);
     strcat(fileNamePart, ".part");
 
-    FILE *fd = fopen(fileNameData, "r");
-    FILE *fp = fopen(fileNamePart, "r");
+    FILE *fd = NULL;
+    fd = fopen(fileNameData, "r");
+    FILE *fp = NULL;
+    fp = fopen(fileNamePart, "r");
 
     if (fd != NULL && fp != NULL) {
         fclose(fd);
@@ -252,13 +429,12 @@ void inviteDeCommandes() {
         printf("Saisir commande:\n");
 
         scanf("%[a-z 0-9 ' ']", cmd);
-        commande = strtok(cmd, " ");//getCommande(cmd);
+        commande = strtok(cmd, " ");
         arg = strtok(NULL, " ");
-        //printf("commande=%s\n", commande);
-        //printf("arg=%s\n", arg);
 
         if (strcmp(commande, "export") == 0) {
             //printf("export ok\n");
+            //pthread_create(&th, NULL, exporterFichier, (void*) arg);
 
         } else if (strcmp(commande, "import") == 0) {
             //printf("import ok\n");
@@ -270,7 +446,6 @@ void inviteDeCommandes() {
             printf ("commande non reconnue\n");
         }
         cmd[0] = 0;
-        //printf("CMD FIN: %s\n", cmd);
         while(getchar()!='\n');
     }
 }
@@ -303,7 +478,7 @@ void initConnexion() {
 
     printf("Message envoyé\n");
 
-    /*char msgOk[MAX_MSG];
+    char msgOk[MAX_MSG];
 
     if (recv(sock, msgOk, MAX_MSG, 0) < 0) {
         perror("erreur reception");
@@ -312,41 +487,77 @@ void initConnexion() {
 
     if (strcmp(msgOk, "901")) { //OK
         char msgCle[MAX_MSG];
-        char* clePair = getClePair;
-        if (clePair != NULL) {
-            msgCle = "101";
+        char* clePair= malloc(sizeof(TAILLE_CLE_PAIR));
+        clePair = getClePair();
+        if (clePair != "") { // si deja clé
+            strcat(msgCle, "101 ");
+            strcat(msgCle, clePair);
+
+            if (send(sock, msgCle, strlen(msgCle), 0) < 0) {
+                perror("erreur envoi");
+                exit(EXIT_FAILURE);
+            }
+            //attente du msg 901
+            char msgConfirm[MAX_MSG];
+            if (recv(sock, msgConfirm, MAX_MSG, 0) < 0) {
+                perror("erreur reception");
+                exit(EXIT_FAILURE);
+            }
+            if (strcmp(msgConfirm, "901") == 0) {
+                printf("connecté au serveur avec la clé pair: %s", clePair);
+            }
+
         } else {
             //nouveau pair
-            msgCle = "102";
-        }
+            strcat(msgCle, "102");
+            if (send(sock, msgCle, strlen(msgCle), 0) < 0) {
+                perror("erreur envoi");
+                exit(EXIT_FAILURE);
+            }
 
-
-        if (send(sock, msgCle, strlen(msgCle), 0) < 0) {
-            perror("erreur envoi");
-            exit(EXIT_FAILURE);
+            char msgNewCle[MAX_MSG];
+            if (recv(sock, msgNewCle, MAX_MSG, 0) < 0) {
+                perror("erreur reception");
+                exit(EXIT_FAILURE);
+            }
+            //nouvelle clé envoyée
+            if (strcmp(msgNewCle, "103") == 0) {
+                char* newCle = strtok(msgNewCle, " ");
+                if (enregistrerNouvelleCle(newCle)) {
+                    printf("une clé de pair a été attribuée: %s", newCle);
+                } else {
+                    printf("erreur de creation d'un nouveau fichier clepair");
+                }
+            }
         }
     }
 
-
-
-
-
-    if (recv(sock, msgRecv, MAX_MSG, 0) < 0) {
-        perror("erreur reception");
-        exit(EXIT_FAILURE);
-    }
-
-    char* codeMsg = strtok(msgRecv, " ");
-    if (strcmp(codeMsg, "901") == 0) {
-        //envoyer clePair
-    } else if (stcmp(codeMsg, ""))
-       */
-       if (close(sock) < 0) {
+    if (close(sock) < 0) {
 		perror("erreur close");
 		exit(EXIT_FAILURE);
 	}
 }
 
+char* getClePair() {
+    char* cle = malloc(sizeof(TAILLE_CLE_PAIR));
+    FILE* f = NULL;
+    f = fopen("clepair", "r");
+    if (f != NULL) {
+        fgets(cle, TAILLE_CLE_PAIR, f);
+        fclose(f);
+    }
+    return cle;
+}
+
+int enregistrerNouvelleCle(char* cle) {
+    FILE *f = NULL;
+    f = fopen("clepair", "w");
+    if (f != NULL) {
+        fputs(cle, f);
+        fclose(f);
+    }
+    return f != NULL;
+}
 
 
 
