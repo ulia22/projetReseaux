@@ -13,14 +13,13 @@ Envoi de données:
 203			"Peux-tu recevoir un fichier"
 
 Telecharger un fichier:
-300 cléFichier		"Donne moi la list des addrIP des pair ayant une partition de ce fichier"
-301 addrIP/Port		"Connecte-toi à ce socket je t'envoi la liste des pair ayant un bout de ce fichier"
+300 cléFichier		"Donne moi la liste des addrIP des pair ayant une partition de ce fichier"
+301 fichierMeta-data	"Je t'envoi la liste des pair ayant un bout de ce fichier"
 302 cléFichier		"As-tu une partition de ce fichier?"
 304 cléFichier cléPair	"Le pair cléPair n'as plus la partition du fichier cléFichier"
-Fichier n'existe pas
 
 Mise à jour meta-data
-400 monAddrIp/port	"Connecte toi sur ce socket je t'envoi la liste des partition que j'ai pour mettre tes données à jour"
+400 cleFichier/Part\n..."Je t'envoi la liste des partition que j'ai pour mettre tes données à jour"
 
 
 Message généraux:
