@@ -15,7 +15,7 @@
 #define MSG_BUFFER_SIZE 1024
 
 //Double linked list contenant les associations addrIP/clépair.
-pair* ptrPair;
+extern pair* ptrPair;
 
 /**
  * Permet d'accepter un nouveau client (code message 100).
@@ -37,7 +37,7 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
     int port = atoi(res[4]);
     printf("Pair connecté à l'addresse: %s , et au port: %u.\n", addrIp, port);
     freeExtract(res, 5);
-    
+
     //Envoi message ok.
     memset(buffer, '\0', strlen(buffer));
     strcat(buffer, "901\0");
@@ -57,7 +57,7 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
         res = NULL;
         res = extract(buffer, PATTERN_CLE_PAIR);
         int j;
-        for(j = 0; j < 3; j++){
+        for (j = 0; j < 3; j++) {
             printf("Pour j=%d res = %s\n", j, res[j]);
         }
         addPair(res[2], addrIp, port);
@@ -67,12 +67,12 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
             printf("ptrPair est NULL");
         }
         freeExtract(res, 3);
-        
+
         memset(buffer, 0, strlen(buffer));
         strcat(buffer, "901");
         send(sdClient, buffer, strlen(buffer), 0);
-        
-    }else if(strncmp(buffer, "102", 3) == 0){
+
+    } else if (strncmp(buffer, "102", 3) == 0) {
         int key = getNewClePair();
         printf("Message recu : %s\n", buffer);
         char keys[10];
@@ -80,11 +80,11 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
         sprintf(keys, "%d", key);
         addPair(keys, addrIp, port);
         printf("Clé pair existante : %d.\n", ptrPair->clePair);
-        
+
         memset(buffer, 0, strlen(buffer));
         sprintf(buffer, "103 %d", key);
         send(sdClient, buffer, strlen(buffer), 0);
-        
+
         memset(buffer, 0, strlen(buffer));
         recv(sdClient, buffer, MSG_BUFFER_SIZE - 1, 0);
         printf("last message: %s\n", buffer);
@@ -98,80 +98,80 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
  * @param client_addr
  * @return 0 si ok
  */
-int shareFile(int sdClient, struct sockaddr_in client_addr){
+int shareFile(int sdClient, struct sockaddr_in client_addr) {
     char buffer[MSG_BUFFER_SIZE];
     char* addrIp = NULL;
     int port = 0, totalLenght = 0;
     pair* curPtr = NULL;
     char* addrFile = NULL;
     int newCleFile = 0;
-    
+
     addrIp = (char *) inet_ntoa(client_addr.sin_addr.s_addr);
     port = ntohs(client_addr.sin_port);
-    
+
     memset(buffer, 0, MSG_BUFFER_SIZE);
     recv(sdClient, buffer, MSG_BUFFER_SIZE, 0);
- printf("Test\n");   
+    printf("Test\n");
     //Préparation du message de retour.
     //envoi message "201 newCleFile "+"addr/port\n"....
     //On calcule d'abord la longueur totale du message, que l'on stocke dans totalLenght.
-    for(curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next){
-printf("Liste addr ip stockés : %s\n", curPtr->addrPair);
-        if(strcmp(curPtr->addrPair, addrIp) != 0){
-            totalLenght += strlen(curPtr->addrPair);//Longueur de cette addresseIp
-            totalLenght ++;// le "/" pour séparateur.
+    for (curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next) {
+        printf("Liste addr ip stockés : %s\n", curPtr->addrPair);
+        if (strcmp(curPtr->addrPair, addrIp) != 0) {
+            totalLenght += strlen(curPtr->addrPair); //Longueur de cette addresseIp
+            totalLenght++; // le "/" pour séparateur.
             memset(buffer, 0, MSG_BUFFER_SIZE);
             sprintf(buffer, "%d", curPtr->portPair);
             totalLenght += strlen(buffer); // longueur du port d'ecoute du pair.
-            totalLenght ++;//\n final entre 2 pairs.
+            totalLenght++; //\n final entre 2 pairs.
         }
     }
     totalLenght += 5; //ajout du "201 " au début et "\0" à la fin.
-    
+
     //On ajoute la nouvelle newCleFile cleFile
     newCleFile = getNewCleFile();
     memset(buffer, 0, MSG_BUFFER_SIZE);
     sprintf(buffer, "%d", newCleFile);
     totalLenght += strlen(buffer);
-    
-    totalLenght ++;//Ajout de l'espace entre newCleFile et addr
-    
+
+    totalLenght++; //Ajout de l'espace entre newCleFile et addr
+
     //On alloue la mémoire.
-    addrFile = malloc(sizeof(char) * totalLenght);
+    addrFile = malloc(sizeof (char) * totalLenght);
     memset(addrFile, 0, totalLenght);
-    
+
     //On crée le message de retour.
     strcat(addrFile, "201 ");
     strcat(addrFile, buffer);
     strcat(addrFile, " ");
-    for(curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next){
-        if(strcmp(curPtr->addrPair, addrIp) != 0){
-	    printf("Addresse envoyée dans un 201 : %s\n", curPtr->addrPair);
-            strcat(addrFile, curPtr->addrPair);//addresseIp
-            strcat(addrFile, "/");// "/" séparateur.
+    for (curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next) {
+        if (strcmp(curPtr->addrPair, addrIp) != 0) {
+            printf("Addresse envoyée dans un 201 : %s\n", curPtr->addrPair);
+            strcat(addrFile, curPtr->addrPair); //addresseIp
+            strcat(addrFile, "/"); // "/" séparateur.
             memset(buffer, 0, MSG_BUFFER_SIZE);
             sprintf(buffer, "%d", curPtr->portPair);
-            strcat(addrFile, buffer);//port
+            strcat(addrFile, buffer); //port
             strcat(addrFile, "\n");
         }
     }
 
     printf("AddrFile : %s\n", addrFile);
-    
+
     send(sdClient, addrFile, totalLenght, 0);
     free(addrFile);
-    
+
     //Reception du fichier de meta-data de retour.
     memset(buffer, 0, MSG_BUFFER_SIZE);
     recv(sdClient, buffer, 4, 0);
-    
-    if(strncmp(buffer, "202", 3)){//On recois le nouveau message de demande d'envoi des metadata.  
+
+    if (strncmp(buffer, "202", 3)) {//On recois le nouveau message de demande d'envoi des metadata.  
         newMetaDataFile(newCleFile, sdClient); //On sauve le nouveau metadata envoyé sur le server.
-        
+
         memset(buffer, 0, MSG_BUFFER_SIZE);
         sprintf(buffer, "901 ");
     }
-    
+
     return 0;
 }
 
@@ -181,28 +181,27 @@ printf("Liste addr ip stockés : %s\n", curPtr->addrPair);
  * @param client_addr
  * @return 
  */
-int dlFile(int sdClient, struct sockaddr_in client_addr){
+int dlFile(int sdClient, struct sockaddr_in client_addr) {
     char buffer[MSG_BUFFER_SIZE];
     char *addrIp, *path;
     int port, totalLenght = 0;
     char** res;
-    
+
     addrIp = (char *) inet_ntoa(client_addr.sin_addr.s_addr);
     port = ntohs(client_addr.sin_port);
-    
+
     memset(buffer, 0, MSG_BUFFER_SIZE);
     recv(sdClient, buffer, MSG_BUFFER_SIZE, 0);
-    
+
     res = extract(buffer, PATTERN_CLE_PAIR);
-    
+
     //Création du path du fichier à ouvrir
-    if(metaFileExist(res[2]) == 1){//Si le fichier existe, on recupère le contenu et on l'envoi.
+    if (metaFileExist(res[2]) == 1) {//Si le fichier existe, on recupère le contenu et on l'envoi.
         sendMetaFile(sdClient, res[2], "301 ");
     }
-    
+
     return 0;
 }
-
 
 /**
  * Extrait les données d'un message suivant un pattern et les retourne dans un tableau.
@@ -241,7 +240,7 @@ char** extract(const char* msg, const char* pattern) {
             for (i = 0; i < nmatch; i++) {
                 start = pmatch[i].rm_so;
                 end = pmatch[i].rm_eo;
-                size = end - start;  
+                size = end - start;
                 res[i] = malloc(sizeof (char) * (size + 1));
                 strncpy(res[i], &str_request[start], size);
                 res[i][size] = '\0';
@@ -278,18 +277,18 @@ char** extract(const char* msg, const char* pattern) {
  * 
  * @return 0 si ok -1 si probleme
  */
-int freeExtract(char** res, int nmatch){
-    if(res == NULL){
+int freeExtract(char** res, int nmatch) {
+    if (res == NULL) {
         return 0;
     }
     int i = 0;
-    for(i = 0; i < nmatch; i++){
+    for (i = 0; i < nmatch; i++) {
         free(res[i]);
     }
     free(res);
     res = NULL;
     return 0;
-    
+
 }
 
 
@@ -317,76 +316,69 @@ int addPair(const char* clePair, const char* ip, const int port) {
 
     //Si il n'y a aucun element.
     if (ptrPair == NULL) {
-        ptrPair = malloc(sizeof (pair));
+        ptrPair = (pair*) malloc(sizeof (struct pair));
 
         ptrPair->clePair = cle;
-
+        printf("Test2\n");
         ptrPair->addrPair = malloc(sizeof (char) * (strlen(ip) + 1));
+        printf("Test3\n");
         strcpy(ptrPair->addrPair, ip);
 
         ptrPair->portPair = port;
         ptrPair->next = NULL;
         ptrPair->prev = NULL;
+        return 0;
     }
 
-    //Si il y a déjà des éléments en place, mais pas le bon.
-    if (ptr == NULL) {
-
-        //On trouve l'element le plus proche.
-        int offset = 0;
-        findNearbyElem(cle, &offset, ptr);
-
-        //Dernier elem de la liste atteint, rajouter l'elem à la fin.
-        if (offset == 1) {
-            ptr->next = malloc(sizeof (pair));
-            (ptr->next)->prev = ptr;
-            ptr = ptr->next;
-
-            ptr->clePair = cle;
-
-            ptr->addrPair = malloc(sizeof (char) * (strlen(ip) + 1));
-            strcpy(ptr->addrPair, ip);
-
-            ptr->portPair = port;
-            ptr->next = NULL;
-        } else if (offset == -1) {//Inserer le nouveau pair entre 2 autre.
-
-            //On enregistre les addresses des elems qui seront les suivant et précédent.
-            pair *nextPair, *prevPair;
-            nextPair = ptr;
-            prevPair = ptr->prev;
-
-            //On créé le nouveau pair à l'addresse elemSuivant->prev.
-            ptr->prev = malloc(sizeof (pair));
-
-            //On relie elemPrec->next au nouveau pair.
-            if (prevPair != NULL) {
-                prevPair->next = ptr->prev;
-            }
-
-
-            //Finalement on pointe le nouvel elem pour remplir la structure.
-            ptr = ptr->prev;
-
-            //On fini de relie les element adjacents.
-            ptr->next = nextPair;
-            ptr->prev = prevPair;
-
-            //On met la cle, l'addrIP, et le port.
-            ptr->clePair = cle;
-
-            ptr->addrPair = malloc(sizeof (char) * (strlen(ip) + 1));
-            strcpy(ptr->addrPair, ip);
-
-            ptr->portPair = port;
-
-            //Enfin si l'element precedent est null (donc on est en premiere position)
-            //On change ptrPair pour qu'il pointe toujours sur le premier element.
-            if (ptr->prev == NULL) {
-                ptrPair = ptr;
-            }
-        }
+    if (findNearbyElem(cle, &ptr) < 0) {
+        printf("Erreur findNearbyElem.");
+        exit(EXIT_FAILURE);
     }
+    
+    if (cle > (ptr->clePair)) {//Si on doit placer l'élément après
+        ptr->next = malloc(sizeof (pair));
+
+        (ptr->next)->prev = ptr;
+        ptr = ptr->next;
+
+        ptr->clePair = cle;
+        ptr->addrPair = malloc(sizeof (char) * (strlen(ip) + 1));
+        strcpy(ptr->addrPair, ip);
+
+        ptr->portPair = port;
+        ptr->next = NULL;
+        return 0;
+    } else if ((cle < (ptr->clePair)) && (ptrPair == ptr)) {//Si le premier élément de la liste a une clé deja supérieure.
+        ptr->prev = malloc(sizeof (pair));
+
+        (ptr->prev)->next = ptr;
+        ptr = ptr->prev;
+        ptr->clePair = cle;
+        ptr->addrPair = malloc(sizeof (char) * (strlen(ip) + 1));
+        strcpy(ptr->addrPair, ip);
+        ptr->portPair = port;
+        ptr->prev = NULL;
+        ptrPair = ptr;
+        return 0;
+    } else if (cle < (ptr->clePair)) {//Si l'on doit l'inserer au milieu de la liste (le pointeur étant sur l'élément suivant).
+        pair *next, *prev;
+        next = ptr;
+        prev = ptr->prev;
+
+        ptr->prev = malloc(sizeof (pair));
+        ptr = ptr->prev;
+        prev->next = ptr;
+
+        ptr->clePair = cle;
+        ptr->addrPair = malloc(sizeof (char) * (strlen(ip) + 1));
+        strcpy(ptr->addrPair, ip);
+
+        ptr->portPair = port;
+        ptr->next = next;
+        ptr->prev = prev;
+        return 0;
+    }
+    return -1;
 }
 
 /**
@@ -427,33 +419,21 @@ pair * updatePair(pair* ptr, const char* ip, const int port) {
 }
 
 /**
- * Met dans ptr l'addresse d'un élément qui devrait etre adjacent à celui à ajouter,
- * avec en offset un int négatif si l'élément devra etre ajouté avant, ou positif si il dois etre ajouté apres.
+ * Met dans ptr l'addresse d'un élément qui devrait etre adjacent à celui à ajouter.
  * Si il n'y a pas d'élem retourne -1, si l'élem existe déja retourne -2.
  * @param clePair
  * @param offset
  * @param ptr
  * @return 0 si ok -1 si probleme.
  */
-int findNearbyElem(const int clePair, int* offset, pair * ptr) {
+int findNearbyElem(const int clePair, pair** ptr) {
 
-    ptr = NULL;
-     *offset = 0;
-
-    if (ptrPair == NULL)
+    *ptr = ptrPair;
+    if (ptrPair == NULL) {
         return -1;
-
-    for (ptr = ptrPair; ptr->clePair < clePair && ptr->next != NULL; ptr = ptr->next)
-        ;
-
-    if (ptr->clePair > clePair) {
-     *offset = -1;
-        return 0;
-    } else if (ptr->clePair < clePair && ptr->next == NULL) {
-     *offset = 1;
-        return 0;
-    } else if (ptr->clePair == clePair) {
-        return -2;
     }
-    return -3;
+    while ((((*ptr)->clePair) < clePair) && (((*ptr)->next) != NULL)) {
+        (*ptr) = ((pair*)(*ptr)->next);
+    }
+    return 0;
 }

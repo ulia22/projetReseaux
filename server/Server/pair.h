@@ -18,12 +18,12 @@ extern "C" {
         int portPair;
         struct pair* next;
         struct pair* prev;
-    } pair;
+    }pair;
 
     typedef struct acceptThreadArg {
         int sock;
         struct sockaddr_in pair;
-    } acceptThreadArg;
+    }acceptThreadArg;
 
 
     /***********************************************
@@ -32,12 +32,12 @@ extern "C" {
     //Double linked list contenant les associations addrIP/clépair.
     //ptrPair pointe sur le premier élément de la liste
     //Cette liste est ordonnée suivant clePair dans l'ordre croissant.
-    extern pair* ptrPair;
+    pair* ptrPair;
 
     pair* updatePair(pair* ptr, const char* ip, const int port);
     pair* findPair(const int clePair);
     int addPair(const char* clePair, const char* ip, const int port);
-    int findNearbyElem(const int clePair, int* offset, pair* ptr);
+    int findNearbyElem(const int clePair, pair** ptr);
 
     /*******************************************************************
      * Fin des fonctions pour gérer les correspondances addrIP/cléPair.

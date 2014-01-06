@@ -23,6 +23,7 @@
 #define INIT_CLE_FILE "0"
 
 #define MAX_BUFFER_LENGHT 1024
+extern pair* ptrPair;
 /**
  * 
  * @return 
