@@ -74,7 +74,7 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
         
     }else if(strncmp(buffer, "102", 3) == 0){
         int key = getNewClePair();
-        
+        printf("Message recu : %s\n", buffer);
         char keys[10];
         memset(keys, 0, 10);
         sprintf(keys, "%d", key);
@@ -111,11 +111,12 @@ int shareFile(int sdClient, struct sockaddr_in client_addr){
     
     memset(buffer, 0, MSG_BUFFER_SIZE);
     recv(sdClient, buffer, MSG_BUFFER_SIZE, 0);
-    
+ printf("Test\n");   
     //Préparation du message de retour.
     //envoi message "201 newCleFile "+"addr/port\n"....
     //On calcule d'abord la longueur totale du message, que l'on stocke dans totalLenght.
     for(curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next){
+printf("Liste addr ip stockés : %s\n", curPtr->addrPair);
         if(strcmp(curPtr->addrPair, addrIp) != 0){
             totalLenght += strlen(curPtr->addrPair);//Longueur de cette addresseIp
             totalLenght ++;// le "/" pour séparateur.
@@ -145,6 +146,7 @@ int shareFile(int sdClient, struct sockaddr_in client_addr){
     strcat(addrFile, " ");
     for(curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next){
         if(strcmp(curPtr->addrPair, addrIp) != 0){
+	    printf("Addresse envoyée dans un 201 : %s\n", curPtr->addrPair);
             strcat(addrFile, curPtr->addrPair);//addresseIp
             strcat(addrFile, "/");// "/" séparateur.
             memset(buffer, 0, MSG_BUFFER_SIZE);
@@ -153,6 +155,8 @@ int shareFile(int sdClient, struct sockaddr_in client_addr){
             strcat(addrFile, "\n");
         }
     }
+
+    printf("AddrFile : %s\n", addrFile);
     
     send(sdClient, addrFile, totalLenght, 0);
     free(addrFile);

@@ -312,6 +312,7 @@ int getNewCleFile(){
         perror("Open file getNewCleFile");
         exit(EXIT_FAILURE);
     }
+
     fgets(buffer, 10, fd);
     fclose(fd);
     int cle = atoi(buffer);

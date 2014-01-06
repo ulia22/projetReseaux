@@ -37,6 +37,7 @@ int initListeningSocket(void);
  * 
  */
 int main(int argc, char** argv) {
+    printf("Server is running...\n");
     init();
     initFileData();
     //Definition des variables pour ouvrir les connections.
@@ -67,7 +68,7 @@ void *manageClient(void* par[]) {
         //Lecture du code du message.
         memset(buffer, 0, MSG_BUFFER_SIZE);
         ret = recv(sdClient, buffer, 3, 0);
-        if(ret == -1){
+        if(ret <= 0){
             strcat(buffer, "909");
         }
         
@@ -92,7 +93,7 @@ void *manageClient(void* par[]) {
         }
     }
     //closesocket(sdClient);
-    shutdown(sdClient, 2);
+    close(sdClient);
     pthread_exit((void*) id_t);
 }
 
@@ -124,7 +125,8 @@ int initListeningSocket(void) {
     memset(&server_addr, 0, sizeof (struct sockaddr_in));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
-    inet_aton(ADDR_SERVER, &server_addr.sin_addr.s_addr);
+    server_addr.sin_addr.s_addr=htonl(INADDR_ANY);
+    //inet_aton(ADDR_SERVER, &server_addr.sin_addr.s_addr);
 
     //Lie la socket server à une adresse ip et un port.
     if (bind(serverSocket, (struct sockaddr*) &server_addr, sizeof (server_addr)) == -1) {
