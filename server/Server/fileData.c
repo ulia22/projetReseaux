@@ -98,7 +98,7 @@ int initFileData() {
 int newMetaDataFile(int idFile, int sdClient){
     char pathToNewFile[256];
     FILE* metaFile;
-    char buffer[MAX_BUFFER_LENGHT];
+    char buffer[MAX_BUFFER_LENGHT], tmp[256];
     int read;
     
     //Création du path
@@ -109,8 +109,9 @@ int newMetaDataFile(int idFile, int sdClient){
     strcat(pathToNewFile, "/");
     
     //Deuxième partie du path
-    sprintf(pathToNewFile, "%d", idFile);
-    
+    sprintf(tmp, "%d", idFile);
+    strcat(pathToNewFile, tmp);
+
     //Ouverture du fichier en écriture
     metaFile = fopen(pathToNewFile, "w");
     if(metaFile == NULL){
@@ -122,12 +123,11 @@ int newMetaDataFile(int idFile, int sdClient){
     do{
         read = 0;
         memset(buffer, 0, MAX_BUFFER_LENGHT);
-        recv(sdClient, buffer, MAX_BUFFER_LENGHT, 0);
+        read = recv(sdClient, buffer, MAX_BUFFER_LENGHT, 0);
         
         //Sauvegarde dans file
         fprintf(metaFile, "%s", buffer);
-        read = strlen(buffer);
-    }while(read == MAX_BUFFER_LENGHT - 1 );
+    }while(read == MAX_BUFFER_LENGHT - 1);
     
     //femeture du fichier
     fclose(metaFile);

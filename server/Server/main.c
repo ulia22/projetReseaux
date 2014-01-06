@@ -40,29 +40,6 @@ extern pair* ptrPair;
 int main(int argc, char** argv) {
     printf("Server is running...\n");
     init();    
-    ///Test seg fault
-    pair* p = NULL;
-    addPair("5", "1.1.1.1", 4555);
-    p = findPair(5);
-    printf("Clé: %d\nAddr: %s\nPort: %d\nNext: %p\nPrev: %p\n", p->clePair, p->addrPair, p->portPair, p->next, p->prev);
-    
-    addPair("4", "2.2.2.2", 5555);
-    p = findPair(4);
-    printf("Clé: %d\nAddr: %s\nPort: %d\nNext: %p\nPrev: %p\n", p->clePair, p->addrPair, p->portPair, p->next, p->prev);
-    
-    addPair("7", "2.2.2.2", 5555);
-    p = findPair(7);
-    printf("Clé: %d\nAddr: %s\nPort: %d\nNext: %p\nPrev: %p\n", p->clePair, p->addrPair, p->portPair, p->next, p->prev);
-    
-    addPair("6", "2.2.2.2", 5555);
-    p = findPair(6);
-    printf("Clé: %d\nAddr: %s\nPort: %d\nNext: %p\nPrev: %p\n", p->clePair, p->addrPair, p->portPair, p->next, p->prev);
-    
-    addPair("3", "2.2.2.2", 5555);
-    p = findPair(3);
-    printf("Clé: %d\nAddr: %s\nPort: %d\nNext: %p\nPrev: %p\n", p->clePair, p->addrPair, p->portPair, p->next, p->prev);
-    ///Fin test////
-    
     initFileData();
     //Definition des variables pour ouvrir les connections.
     int sdServerAccept;
