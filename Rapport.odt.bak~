@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE abiword PUBLIC "-//ABISOURCE//DTD AWML 1.0 Strict//EN" "http://www.abisource.com/awml.dtd">
+<abiword template="false" xmlns:ct="http://www.abisource.com/changetracking.dtd" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:math="http://www.w3.org/1998/Math/MathML" xid-max="174" xmlns:dc="http://purl.org/dc/elements/1.1/" fileformat="1.1" xmlns:svg="http://www.w3.org/2000/svg" xmlns:awml="http://www.abisource.com/awml.dtd" xmlns="http://www.abisource.com/awml.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" version="2.9.2" xml:space="preserve" props="dom-dir:ltr; document-footnote-restart-section:0; document-endnote-type:numeric; document-endnote-place-enddoc:1; document-endnote-initial:1; lang:fr-FR; document-endnote-restart-section:0; document-footnote-restart-page:0; document-footnote-type:numeric; document-footnote-initial:1; document-endnote-place-endsection:0">
+<!-- ======================================================================== -->
+<!-- This file is an AbiWord document.                                        -->
+<!-- AbiWord is a free, Open Source word processor.                           -->
+<!-- More information about AbiWord is available at http://www.abisource.com/ -->
+<!-- You should not edit this file by hand.                                   -->
+<!-- ======================================================================== -->
+
+<metadata>
+<m key="abiword.date_last_changed">2014-01-05T18:28:46.987206979</m>
+<m key="abiword.generator">AbiWord</m>
+<m key="dc.creator">Clément </m>
+<m key="dc.date">2014-01-05T16:13:38.451782935</m>
+<m key="dc.format">application/x-abiword</m>
+<m key="meta:editing-cycles">4</m>
+<m key="meta:editing-duration">PT2H47S</m>
+<m key="meta:initial-creator">Clément </m>
+</metadata>
+<rdf>
+<t  s="styles.xml"  p="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"  objecttype="1"  xsdtype=""  >http://docs.oasis-open.org/ns/office/1.2/meta/odf#StylesFile</t>
+<t  s="content.xml"  p="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"  objecttype="1"  xsdtype=""  >http://docs.oasis-open.org/ns/office/1.2/meta/odf#ContentFile</t>
+<t  s="manifest.rdf"  p="http://docs.oasis-open.org/ns/office/1.2/meta/pkg#hasPart"  objecttype="1"  xsdtype=""  >styles.xml</t>
+<t  s="manifest.rdf"  p="http://docs.oasis-open.org/ns/office/1.2/meta/pkg#hasPart"  objecttype="1"  xsdtype=""  >content.xml</t>
+<t  s="manifest.rdf"  p="http://www.w3.org/1999/02/22-rdf-syntax-ns#type"  objecttype="1"  xsdtype=""  >http://docs.oasis-open.org/ns/office/1.2/meta/pkg#Document</t>
+</rdf>
+<styles>
+<s type="P" name="Normal" props="lang:fr-FR; default-tab-interval:1.251cm; font-size:12pt; font-family:Liberation Serif; dom-dir:ltr"/>
+<s type="P" name="Title" basedon="Heading" followedby="Text body" props="text-align:center; font-weight:bold; font-size:18pt"/>
+<s type="P" name="Heading" basedon="Normal" followedby="Text body" props="margin-top:0.423cm; keep-with-next:yes; margin-bottom:0.212cm; font-family:Liberation Sans; font-size:14pt"/>
+<s type="P" name="Text body" basedon="Normal" followedby="Text body" props="margin-bottom:0.212cm; margin-top:0cm"/>
+<s type="P" name="Heading 1" basedon="Heading" followedby="Text body" props="font-weight:bold; font-size:16pt"/>
+<s type="P" name="Heading 2" basedon="Heading" followedby="Text body" props="font-size:14pt; font-weight:bold; font-style:italic"/>
+<s type="P" name="Standard" props="lang:fr-FR; font-size:11pt; margin-bottom:0.1389in; font-family:Calibri; line-height:1.145833"/>
+<s type="P" name="Heading 4" basedon="Heading" followedby="Text body" props="font-size:12pt; font-weight:bold; font-style:italic"/>
+<s type="P" name="Paragraphe de liste" basedon="Standard" props="margin-bottom:0.1389in; margin-left:0.5000in"/>
+<s type="P" name="Subtitle" basedon="Heading" followedby="Text body" props="text-align:center; font-size:14pt; font-style:italic"/>
+<s type="P" name="Heading 3" basedon="Heading" followedby="Text body" props="font-weight:bold; font-size:14pt"/>
+<s type="C" name="Texte de bulles Car_text" props="font-family:Tahoma; font-size:8pt"/>
+<s type="P" name="Quotations" basedon="Normal" followedby="Quotations" props="margin-top:0cm; margin-bottom:0.499cm; text-indent:0cm; margin-left:1cm; margin-right:1cm"/>
+<s type="P" name="Caption" basedon="Normal" followedby="Caption" props="margin-top:0.212cm; font-size:12pt; margin-bottom:0.212cm; font-style:italic"/>
+<s type="P" name="Texte de bulles" basedon="Standard" props="line-height:1.000000; font-family:Tahoma; font-size:8pt"/>
+</styles>
+<pagesize pagetype="A4" orientation="portrait" width="8.267717" height="11.692913" units="in" page-scale="1.000000"/>
+<section xid="31" props="page-margin-right:2cm; page-width:21.001cm; page-margin-left:2cm; page-orientation:portrait; page-margin-bottom:2cm; page-margin-top:2cm; page-height:29.7cm">
+<p style="Normal" xid="32" props="text-align:right">Barbaste Clément</p>
+<p style="Normal" xid="33" props="text-align:right">Schummer Bastien</p>
+<p style="Normal" xid="34" props="text-align:right">Master 1 IMAGINA</p>
+<p style="Title" xid="35"><c></c></p>
+<p style="Title" xid="36"><c></c></p>
+<p style="Title" xid="37"><c></c></p>
+<p style="Title" xid="38"><c></c></p>
+<p style="Title" xid="39"><c></c></p>
+<p style="Title" xid="40"><c></c></p>
+<p style="Title" xid="41">Projet</p>
+<p style="Title" xid="42">réseaux et communication</p>
+<p style="Text body" xid="43"><c></c></p>
+<p xid="44"><pbr/></p>
+<p style="Heading 1" props="" xid="45">Mode d'emploi du programme :</p>
+<p style="Text body" xid="46"><c></c></p>
+<p style="Text body" xid="47">	Tout d'abord lancez le server sur une machine . Puis lancer le client sur une ou plusieurs autres machines et donnant l’adresse IP du server en paramètre.</p>
+<p style="Text body" xid="48"><c props="font-weight:normal; text-position:normal; text-decoration:none; color:000000; font-style:normal">Le client dispose de trois commandes de base :</c></p>
+<p style="Text body" xid="6"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal"></c><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">export &lt;nomdufichier&gt; pour exporter un fichier</c></p>
+<p style="Text body" xid="4" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">import&lt;nomdufichier&gt; pour télécharger un fichier</c></p>
+<p style="Text body" xid="5" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">exit pour quitter l’application</c></p>
+<p style="Text body" xid="49" props="font-family:Calibri; font-size:11pt; color:000000; lang:fr-FR; text-position:normal; font-weight:normal; font-style:normal; text-decoration:none"><c></c></p>
+<p style="Heading 1" xid="50">Architecture de l'application :</p>
+<p style="Text body" xid="51">	L'application se divise en 2 parties : une partie server et une partie client. Le server ne stocke aucun fichiers mais il est nécessaire pour donner  pour que les clients connectés puissent se partager leur adresse IP après chaque déconnexion ( vu que celle-ci est dynamique).</p>
+<p style="Heading 2" xid="52">Partie server :</p>
+<p style="Text body" xid="53">	L'architecture de la partie server est simple. Il ouvre un port d’écoute qui accepte toutes les connexions dans une boucle. Lorsqu'un client se connecte, il le gère dans un thread, le tread principal se remet à attendre des connexions, tandis que les threads secondaires (pour gérer les clients) retournent les données (souvent des adresses IP de pair) aux clients.</p>
+<p style="Text body" xid="54">	L’intérêt des threads et de pouvoir gérer plusieurs pair connectés en même temps, ils nécessitent néanmoins une gestion des ressource partagées plus complexe (mutex).</p>
+<p style="Text body" xid="55">	Il y a une liste doublement chaînées de structures qui contient la liste des pair connectés avec une correspondances entre leur adresse IP et une clé unique à chaque pair. Cette liste est une variable globale (pas besoin de mémoire persistante vu qu'elle doit être nettoyée couramment car les clients n'ont pas une adresse IP statique). Chaque thread doit être synchronisé dans la modification de cette liste.</p>
+<p style="Text body" xid="56">	Le server héberge également des fichiers méta-data qui sont des données persistantes. Il y a un fichier méta-data pour chaque fichiers partagés entre pairs. Ce fichier méta-data contient le nom du fichier partagé, sont identifiant unique pour le server, la liste des pair qui en ont une partie. L'accès à un de ces fichiers par un thread doit être géré et ce pour tous les fichiers.</p>
+<p style="Text body" xid="57"><c></c></p>
+<p style="Heading 2" xid="58">Partie client :</p>
+<p style="Text body" xid="59"><c props="font-family:Calibri; font-size:11pt; color:000000; text-decoration:none; text-position:normal; font-weight:normal; font-style:normal; lang:fr-FR">L’application client est particulière car elle dispose premièrement d’un thread qui joue un rôle de serveur qui écoute les requêtes du serveur ou des pairs en boucle. Ce thread est lancé dès le démarrage de l’application. Le serveur et des pairs peuvent alors s’y connecté. A chaque connexion entrante, il créer un nouveau thread pour traiter plusieurs requêtes simultanément.</c></p>
+<p style="Standard" xid="7" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; dom-dir:ltr; margin-bottom:0.1389in; line-height:1.145833; text-align:left; margin-right:0.0000in"><c props="font-family:Calibri; font-size:11pt; lang:fr-FR; text-position:normal; font-weight:normal; font-style:normal; text-decoration:none">Ensuite, lorsque l’utilisateur saisie une commande d’export ou d’import, un thread sera également lancé pour chaque commande. Ainsi, l’utilisateur peut très bien demander un export, suivit d’un téléchargement, même si son export n’est pas terminé.</c></p>
+<p style="Standard" xid="8" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; dom-dir:ltr; margin-bottom:0.1389in; line-height:1.145833; text-align:left; margin-right:0.0000in"><c props="font-family:Calibri; font-size:11pt; lang:fr-FR; text-position:normal; font-weight:normal; font-style:normal; text-decoration:none">Lors de la première connexion, le serveur donne une clé de pair unique qui sera stocké dans un fichier local du pair contenant sa clé de pair. Lors des prochaines connexions, elle sera envoyée au serveur, qui pourra ainsi le reconnaître. Les pairs possèdent aussi des fichiers .part qui sont des partitions de  fichiers stockées.</c></p>
+<p style="Heading 1" xid="60" props="font-family:Calibri; font-size:11pt; color:000000; lang:fr-FR; text-position:normal; font-weight:normal; font-style:normal; text-decoration:none"><c></c></p>
+<p style="Heading 1" props="" xid="61">Protocoles d'échanges</p>
+<p style="Heading 2" xid="62">Partie server :</p>
+<p style="Text body" xid="63">	La partie server utilise les sockets en mode connectés pour communiquer avec les pair. Le mode connecté est utilisé pour pouvoir dialoguer avec les pairs, envoyer plusieurs messages facilement, depuis le pair ou le server ainsi que des fichier.</p>
+<p style="Text body" xid="64">	Comme le server doit pouvoir répondre à plusieurs requêtes, un protocole de communication entre le server et un pair a été mis en place. Un simple code à 3 chiffres définit la nature d'une requête. Il peut être suivi d'un ou plusieurs arguments.</p>
+<p style="Text body" xid="65">	Voici la liste des messages possible entre le server et le client. </p>
+<p style="Text body" xid="66"><c></c></p>
+<p style="Heading 4" xid="67">Connexion initiale au server: </p>
+<p style="Normal" xid="68" props="font-family:DejaVu Sans">100 monAddrIP/Port	"Je suis un pair et je suis connecté à cette addrIp." </p>
+<p style="Normal" xid="69" props="font-family:DejaVu Sans">101 cléPair			"Voilà ma clé unique en tant que pair". </p>
+<p style="Normal" xid="70" props="font-family:DejaVu Sans">102				"Je suis un nouveau Pair, je n'ai pas de clé client." </p>
+<p style="Normal" xid="71" props="font-family:DejaVu Sans">103 cléPair			"Voila votre cléPair unique à conserver." </p>
+<p style="Normal" xid="72" props="font-family:DejaVu Sans"><c></c></p>
+<p style="Heading 4" xid="73">Envoi de données: </p>
+<p style="Normal" xid="74" props="font-family:DejaVu Sans">200			"Donne moi la liste des pair qui peuvent recevoir des 				données." </p>
+<p style="Normal" xid="75" props="font-family:DejaVu Sans">201 cléFichier addrServer/port\n..."Je t'envoi la liste des pairs après le code '201 '." </p>
+<p style="Normal" xid="76" props="font-family:DejaVu Sans">202			"Je t'envoie le fichier metat-data après le code '202 ' ." </p>
+<p style="Normal" xid="77" props="font-family:DejaVu Sans">203			"Peux-tu recevoir un fichier." </p>
+<p style="Normal" xid="78"><c></c></p>
+<p style="Heading 4" xid="79">Télécharger un fichier: </p>
+<p style="Normal" xid="80" props="font-family:DejaVu Sans">300 cléFichier		"Donne moi la liste des addrIP des pairs ayant une 					partition de ce fichier." </p>
+<p style="Normal" xid="81" props="font-family:DejaVu Sans">301 fichierMeta-data	"Je t’envoie la liste des pairs ayant un bout de ce 					fichier. " </p>
+<p style="Normal" xid="82" props="font-family:DejaVu Sans">302 cléFichier		"As-tu une partition de ce fichier ?" </p>
+<p style="Normal" xid="83" props="font-family:DejaVu Sans">304 cléFichier cléPair	"Le pair cléPair n'as plus la partition du fichier 						cléFichier." </p>
+<p style="Normal" xid="84"><c></c></p>
+<p style="Heading 4" xid="85">Mise à jour meta-data  :</p>
+<p style="Normal" xid="86" props="font-family:DejaVu Sans">400 cleFichier/Part\n..."Je t’envoie la liste des partitions que j'ai pour mettre tes 				données à jour." </p>
+<p style="Normal" xid="87"><c></c></p>
+<p style="Normal" xid="88"><c></c></p>
+<p xid="89"><pbr/></p>
+<p style="Normal" props="" xid="90"><c></c></p>
+<p style="Heading 4" xid="91">Message généraux: </p>
+<p style="Normal" xid="92" props="font-family:DejaVu Sans">901				"Ok" </p>
+<p style="Normal" xid="93" props="font-family:DejaVu Sans">902				"Refus" </p>
+<p style="Normal" xid="94" props="font-family:DejaVu Sans">903 addrServer/port	"Refus je t’envoie les explications dans un fichier sur ce socket" </p>
+<p style="Normal" xid="95" props="font-family:DejaVu Sans">904				"Reçu" </p>
+<p style="Normal" xid="96" props="font-family:DejaVu Sans">905				"Envoi terminé" </p>
+<p style="Normal" xid="97" props="font-family:DejaVu Sans">906				"Toujours connecté?" </p>
+<p style="Normal" xid="98" props="font-family:DejaVu Sans">907				"Oui" </p>
+<p style="Normal" xid="99" props="font-family:DejaVu Sans">908				"Non" </p>
+<p style="Normal" xid="100" props="font-family:DejaVu Sans">909				"Fermeture de la connexion."</p>
+<p style="Normal" xid="101" props="font-family:DejaVu Sans"><c></c></p>
+<p style="Normal" xid="102" props="font-family:DejaVu Sans"><c></c></p>
+<p style="Normal" xid="103">	Il y a 3 requêtes client implémentés sur le server : </p>
+<p style="Normal" xid="104"><c></c></p>
+<p style="Normal" xid="105">- <c props="text-decoration:underline">L'initialisation de la connexion.</c> Lorsque le client est lancé, il va dire au server sur quelle IP il est connecté, et quel est son port d’écoute (les pair on aussi une partie 'server' qui leur sert à recevoir des requêtes venant du server ou des autre clients).</p>
+<p style="Normal" xid="106">La liste possible des messages envoyés (dans l'ordre et on suppose sans erreurs) :</p>
+<p style="Normal" xid="107"><c></c></p>
+<p style="Normal" xid="108">- Pair → 100</p>
+<p style="Normal" xid="109">ENSUITE</p>
+<p style="Normal" xid="110">	{</p>
+<p style="Normal" xid="111">		- Server → 901</p>
+<p style="Normal" xid="112">		- Pair → 101</p>
+<p style="Normal" xid="113">		- Server → 901</p>
+<p style="Normal" xid="114">	}</p>
+<p style="Normal" xid="115"> OU</p>
+<p style="Normal" xid="116">	{</p>
+<p style="Normal" xid="117">		- Pair → 102</p>
+<p style="Normal" xid="118">		- Server → 103</p>
+<p style="Normal" xid="119">		- Pair → 901</p>
+<p style="Normal" xid="120">	}</p>
+<p style="Normal" xid="121"><c></c></p>
+<p style="Normal" xid="122"><c></c></p>
+<p style="Normal" xid="123">- <c props="text-decoration:underline">Envoi de données.</c> Un pair peut demander au server la liste des client connectés pour partager un fichier avec eux.</p>
+<p style="Normal" xid="124">La liste possible des messages envoyés (dans l'ordre et on suppose sans erreurs) :</p>
+<p style="Normal" xid="125"><c></c></p>
+<p style="Normal" xid="126">- Pair → 200</p>
+<p style="Normal" xid="127">- Server → 201</p>
+<p style="Normal" xid="128">… Le pair partage son fichier …</p>
+<p style="Normal" xid="129">… Le pair construit le fichier meta-data avec une correspondance IP/CléFichier …</p>
+<p style="Normal" xid="130">- Pair → 202</p>
+<p style="Normal" xid="131">… Le server enregistre le fichier méta-data en remplacent les addresses IP par une cléPair (cette fonctionnalitée n'est pas implémentée) …</p>
+<p style="Normal" xid="132"><c></c></p>
+<p style="Normal" xid="133">- Server → 901</p>
+<p style="Normal" xid="134"><c></c></p>
+<p style="Normal" xid="135"><c></c></p>
+<p style="Normal" xid="136">- <c props="text-decoration:underline">Telecharger un fichier.</c> Un pair demande la liste des pairs ayant une partie du fichier identifié par cléFichier. Le server lui donne le fichier meta-data correspondant à ce fichier.</p>
+<p style="Normal" xid="137">La liste possible des messages envoyés (dans l'ordre et on suppose sans erreurs) :</p>
+<p style="Normal" xid="138"><c></c></p>
+<p style="Normal" xid="139">- Pair → 300</p>
+<p style="Normal" xid="140">- Server → 301</p>
+<p style="Normal" xid="141">- Pair → 901</p>
+<p style="Normal" xid="142"><c></c></p>
+<p style="Normal" xid="143"><c></c></p>
+<p style="Heading 2" xid="144">Partie Client : </p>
+<p style="Text body" xid="145"><c></c></p>
+<p style="Text body" xid="146"><c props="font-weight:normal; text-position:normal; text-decoration:none; color:000000; font-style:normal">Lors de imports et d’exports, les pairs sont donc aussi amenés à communique entre eux, toujours en respectant la convention d’un code de message à 3 chiffres.</c></p>
+<p style="Text body" xid="9" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="font-weight:normal; text-position:normal; text-decoration:none; color:000000; font-style:normal"></c></p>
+<p style="Text body" xid="10" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; text-decoration:underline; font-weight:normal; font-style:normal">Envoi de données :</c></p>
+<p style="Text body" xid="11" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">600 cléFichier contenu «envoi d’une partition à stocker correspondant au fichier cléFichier</c></p>
+<p style="Text body" xid="12" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">601			« Partition reçu et enregistrée »</c></p>
+<p style="Text body" xid="13" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">602			« Impossible de stocker le fichier »</c></p>
+<p style="Text body" xid="14" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal"></c></p>
+<p style="Text body" xid="15" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">Télécharger un fichier : </c></p>
+<p style="Text body" xid="16" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">  cléFichier		«demande de téléchargement de la partition du fichier ayant pour clé cléFichier »</c></p>
+<p style="Text body" xid="17" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">contenu		« message d’envoi de la partition»</c></p>
+<p style="Text body" xid="18" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal"></c></p>
+<p style="Text body" xid="19" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">Il y a donc 2 dialogues différents possibles entre chaque pair.</c></p>
+<p style="Text body" xid="20" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal"></c></p>
+<p style="Text body" xid="21" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">Envoi de données : Pair1 souhaite envoyer une partition à stocker chez Pair2. </c></p>
+<p style="Text body" xid="22" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">- Pair1 600</c></p>
+<p style="Text body" xid="23" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">Si l’enregistrement s’est bien passer :</c></p>
+<p style="Text body" xid="24" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">- Pair2601</c></p>
+<p style="Text body" xid="25" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">Sinon</c></p>
+<p style="Text body" xid="26" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">-Pair2602</c></p>
+<p style="Text body" xid="27" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal"></c></p>
+<p style="Text body" xid="28" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">Télécharger un fichier : Pair1 souhaite télécharger une partition stockée chez Pair2. Le dialogue est simple :</c></p>
+<p style="Text body" xid="29" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">- Pair1 500</c></p>
+<p style="Text body" xid="30" props="text-align:left; text-indent:0.0000in; line-height:1.145833; margin-right:0.0000in; margin-left:0.0000in"><c props="text-position:normal; font-weight:normal; text-decoration:none; font-style:normal">-Pair2501</c></p>
+<p style="Text body" xid="147" props="font-family:Calibri; font-size:11pt; color:000000; lang:fr-FR; text-position:normal; font-weight:normal; font-style:normal; text-decoration:none"><c></c></p>
+<p xid="148"></p>
+<p style="Heading 1" props="" xid="149">Schémas algorithmiques :</p>
+<p style="Heading 2" xid="150">Partie server :</p>
+<frame strux-image-dataid="0" xid="151" props="bot-style:none; xpos:9.844cm; frame-width:7.666cm; wrap-mode:wrapped-both; frame-type:image; ypos:0.594cm; frame-height:12.776cm; frame-pref-page:5; position-to:block-above-text; left-style:none; right-style:none; top-style:none">
+</frame><p style="Text body" xid="152">Principaux schémas algorithmiques du server :</p>
+<p style="Text body" xid="153">	</p>
+<frame strux-image-dataid="1" xid="154" props="bot-style:none; xpos:0.125cm; frame-width:7.066cm; wrap-mode:wrapped-both; frame-type:image; ypos:0.265cm; frame-height:12.247cm; frame-pref-page:5; position-to:block-above-text; left-style:none; right-style:none; top-style:none">
+</frame><p style="Text body" xid="155"><c></c></p>
+<p style="Text body" xid="156"><c></c></p>
+<p style="Text body" xid="157"><c></c></p>
+<p style="Text body" xid="158"><c></c></p>
+<p style="Text body" xid="159"><c></c></p>
+<p style="Text body" xid="160"><c></c></p>
+<p style="Text body" xid="161"><c></c></p>
+<p style="Text body" xid="162"><c></c></p>
+<p style="Text body" xid="163"><c></c></p>
+<p style="Text body" xid="164"><c></c></p>
+<p style="Text body" xid="165"><c></c></p>
+<p style="Text body" xid="166"><c></c></p>
+<p style="Text body" xid="167"><c></c></p>
+<p style="Text body" xid="168"><c></c></p>
+<p style="Text body" xid="169"><c></c></p>
+<p style="Text body" xid="170"><c></c></p>
+<p style="Text body" xid="171"><c></c></p>
+<p style="Text body" xid="172"><c></c></p>
+<p style="Heading 2" xid="173">Partie Client : </p>
+<p style="Text body" xid="174"></p>
+</section>
+<data>
+<d name="0" mime-type="image/png" base64="yes">
+iVBORw0KGgoAAAANSUhEUgAAASwAAAH0CAIAAAAIcodgAAAACXBIWXMAAAsTAAALEwEAmpwY
+AAAAB3RJTUUH3gEFEQgi7gMM1gAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeB
+DhcAACAASURBVHja7d1/VFR14v/xARRmRkJABZQfA0hKiz8S0bS2rVXT1GrdypSSTKqVtgzM
+08mtjXVT9ND6g4MhnqyEak/pWXc5rUpmEman1SRSfvijABVRwATsyDD8mpnPH+/v3p3vzJ1x
+hh/DAM/HH57hPe973/femZfve++8771uRqNRAaDvuLMJAEIIEEIAhBAghAAIIUAIARBCgBAC
+IIQAIQRACAFCCIAQAoQQACEECCEAQggQQgCEECCEAAghQAgBEEKAEAIghAAhBEAIAUIIgBAC
+hBAAIQQIIQBCCBBCAIQQIIQACCFACAEQQoAQAiCEACEEQAgBQgiAEAKEEAAhBAghAEIIEEIA
+hBAghAAIIUAIARBCgBACIIQAIQRACAFCCIAQAoQQACEECCFACAEQQoAQAiCEwGA1pPdm7ebm
+xvbFgGE0GukJAXZHARBCgGNCl9ufBnqPc85r0BMC7I4ChBAAIQQIIQBCCBBCAIQQIIQACCFA
+CAEQQoAQAiCEACEE4ARD2AQ9qKamZufOnV9++eX58+dv3rypVCqDg4NjYmLuueeehx56aPz4
+8WwiWHLrvcttTS+IHAwX9e7Zs+e5555rbm62VoErm/tfPJzyHWZ3tGccP378qaeeam5udnNz
+W7FixYkTJxoaGm7evHn8+PFXXnnF29ubTQSFjf+ee4lzWnERDz/8sFjT9evXW75bX1//+OOP
+G9HfOOc7zO5ozxgxYkRjY6NCobh27dqoUaP4z53dUXZHne3mzZvihcFgcGjCY8eOLVu2LCIi
+QqVS+fj4xMXFbdq0SavVyn4hBIVCUVZW9sgjj4wYMcLDw0O8O2XKFPFudna25bTZ2dni3djY
+2N5oHeyO9r2oqCixposXL25qarJnkvb29ueee072Q7n99turqqqsbc+ysjJfX1+zbbt9+3bx
+Z1xcnGVbU6dOFe++8847vdE6u6PdaoUQ9ojU1FRpZZVK5Zw5c/785z//61//+vnnn61NkpSU
+JOrffffd33zzTWtr65UrV1avXi0KJ0+e3NbWJrs9Z8+e/dhjj507d06v10vvNjY2enl5iQqn
+T582nfD06dPSgjU2NvZG64SQEPY9nU73wAMPyO7F3X///YcPHzarf+LECVFBo9FotVrTt37/
++9+Ltz744APZ7Tl9+vTOzk7LZVi6dKmokJycbFr+8ssvi/L4+Pjea50QEsK+p9fr33///Tvv
+vFN2Hy81NdW08rPPPivK3333XbP5HDt2TLw1f/582e358ccfyy7AF198IZ0lkvqx1tZWf39/
+US79X9AbrRNCQuhCqqurP/nkkzVr1sTExJhuhPz8fKnO7bffLh1imU3e0NAg3goKCpLdnhcu
+XLD2v4BGo5FGDojCTz/9VJSEh4cbDIbea50QEkIXdfTo0eDgYLERHnzwQalcrVaLQg8PDw8P
+D3d3d3d3d+n0ozB06FDZ7dna2mqtuXXr1ok68+bNEyVz584VJevWrevt1glh1/A7Ya/797//
+/cgjj4i9xOvXr0vnSNra2uw5d225PW1szEuXLkVGRhoMBnd394sXLxqNxoiICPHnhQsXwsLC
+erV1fifkd0IXdd9994kXN27ckAoDAwPFi+rqajv/J7aHRqOZPXu2+Lly9+7du3fvFr9bzpkz
+R0pg77UOQuiidDqdeDF8+HCp8J577hEvvv76655tLjExUbzYvXt3Tk6OWWFvtw5+rO8zDz/8
+cGVlpexbb7zxhtgICxYskAqPHDki9V03btxwaHvarmZ6OlTw9/c3O5DrvdY5JuTETF9+Wh4e
+HosXL967d+/ly5fb2trq6uqOHj26ZMkS6eiisLDQdJKEhATxVkxMzN69e69du9bZ2Xnjxo2T
+J09u3rw5Nja2yzF46aWXTDf+qlWrLOv0XuuEkBD2/adlSa1W5+TkWHZZy5cvt38nxf6N+cMP
+P5jO59SpU7IdZi+1Tgg5O9o3KioqDh8+fPz48dLS0urq6l9++cXDw8PPzy86Onr27NkrVqyQ
+fqiwHMC9a9eub775pra2Vq/Xjxw58o477pg3b97vfvc7syvxHTo/OXXq1OLiYoVCERsb+/33
+39sYPt4brXN21LFWCCHATxQAP1EAIIQAIQRACAFCCIAQAoQQACEECCEAQggMGjwa7X+cPEa5
+r4ZE92C7A2ZUd9+uiHt/33ZmvL29x48f/+yzzxYVFfHfCvrH17hfX0Vh2oT5/y7u7hs3bnzt
+tdfoCbvTru3KA74n5CoKB4iLIw0Gw8WLFzds2DB06FCDwbB27drDhw87OhOnfZ+4nxIGVAil
+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
+fftM312zZs306dPffPNNFz9C7pMYu3FQ7ujH41JbrDtL1YNrVF5ePmvWrL/85S+LFi3y9/cv
+Li7evHnzP//5T+dvjW6uS/fn4KTdmMHJNbdYj+yOdn8xnnjiic2bN8u+pdfr169fHx4e7ufn
+t2LFiubmZqn1rVu3hoSEuLm52VPHbLYdHR1vvvlmWFiYr6+v1LS0LtILG3POzs7WaDRKpXLG
+jBmlpaVm2XPmh8juKHrAV1999dhjj8m+lZGRUVhYWFBQUFlZ2dHRkZqaKr119OjREydOGAwG
+e+qYzTY9Pf3YsWMFBQVVVVU1NTXWFszGnA8dOlRYWHj9+vX58+cnJSVJewTOP2CmJ6Qn7IE1
+8vDw0Ol0srONjo4+d+6ceF1XV6fRaKRqFy9etL+OmaioKNF9ma2R2Qsbc66trRWvtVqtSqUy
+m9CZOCbkmNCBaa1NEhAQ8N1334WHh1seXKnV6vb2djGJwWBwd3fX6/WigsFgEDO0p44ZlUrV
+1NSkVCplj+jsad10FSwn5OwoXJS1nzd+85vf5OXlyU4SFhZWUVHR2dmp1+vFQZplpO2pYyY0
+NLSiouKWC2xjzi70Iwf7meyOdn8xTp06FRAQ8O6779bV1Wm12sOHD0uzzcjImDNnzpkzZ9ra
+2kpKSpYsWWK542dPHTNpaWn3339/ZWVlY2NjSkqKtd1RO+cs/Tlq1KgzZ844+0MkXYSwR5bk
++PHjs2bNGjZsmFqtvu+++44cOSKdn8zMzIyOjvby8po4cWJeXp5lDOypY6a9vf31118PCQnx
+8/PbunWrjbOj9sxZ+nPLli2+vr5O/pQ5JuSYkAHcfYxjQoAQAoQQACEECCHQy/rpdUaEECCE
+AAgh+qn29vYXX3xxxIgRQUFBf/vb36TyH3/88fHHHx8xYsTw4cMfffTR69evS/urO3fuDA8P
+V6lUM2fOLCsrE+VHjhyJjY1VqVTh4eHvvffeLXd0pT+tzZAQYrDYuHHjjz/+WFJSUlRUlJ+f
+L5UvXrz4xRdfrKmpqa6uDg4O/tOf/iS9ZXl5kUKhSEhIeOONN27cuPH1118fP37coWWQnaHL
+YTwaw9Z6adnGjh1bXl4uXpeWlso29Msvv4SEhNi+vCg0NDQzM7O6utrGili7oEl2hq6GnhC9
+5cqVK5GRkeJ1VFSUVF5UVDR79mx/f383N7fhw4fX1tZKbwUFBYkXarVap9OJ13l5eQUFBVOm
+TBk3bpxpj2oP2RnSE9ITDsaeUByPSeW5ubkNDQ2dnZ0NDQ0Ki1HXsn8aDIb9+/cH42Zr4QAA
+A/hJREFUBQVZNqRUKrVarXgtIm3PDOkJMfA9+eSTq1evvnLlypUrV1JSUqRyrVbr4+MzbNiw
+S5cu/eEPf7jlfOLj48+cOdPR0aFQKNzdZb6xU6dO3bx5s1arvXDhwsqVK/vflqKLoyfspWVr
+bW1NSkry8/MLCAh4++23pYYOHDgwfvz4oUOHhoWFZWZm3rLj+uSTT8aPH69UKqdMmVJQUGDZ
+UGlp6YwZM5RKpUaj2bFjR7/rCbmUyV5cygR+ogAIIQBCCBBCAIQQsMI5V0v1eCuEEKSOnhBg
+dxQw7VtkL/9pa2tLSUkJCgoKCgpKSUlpa2uT7Yvc3NxOnz49duxY6bdHMU6tpKTEYDBs2LAh
+IiLC398/MTFRq9WKCjaubLLd6YkSNzc307dkF97NzW3btm2hoaFiwI2jS2LtmixCiN4ie/lP
+WlpaeXl5UVFRUVFRSUnJxo0brU0+efJkX1/fgoIC8eeRI0f8/PwmTZpk7QFJNq5sss0o9xAl
+a9cumT7dydElsXZNVo9hPBrD1swKZS//iYyMNL0uSfR11oaGvfPOO0888YQoWbx4cVZWltH6
+A5JsXNl0y0Fndi684v9/upOjS2LPNVncBp8Q9mQIZf9UKpXSw890Op1SqbRRv6mpycfH5+ef
+f7527ZqPj09TU5PRaFSpVB4eHh4eHmKf0N3dXUxy8uTJWbNm+fn5iYXx8PDoTgitXVhoMBik
+ckeXxGzde/w7wO4o7DJmzJiqqirxuqKiIjg4WLxWKpUtLS3idV1dnXjh6+u7cOHCnJycnJyc
+hx56SDzdwdoDkpYuXbp8+XLxVkNDg1QuO+cunx01renokgQHB0vrXllZyTEh+kZ8fHxycnJN
+TU1NTU1ycnJ8fLwot3YZUWJi4q5du957773ExERR8sILLzz//PNnz55tb28vLS1dunSpKLd2
+ZZM9FyiNHDny7Nmzjq6Lo0ti7ZosjgnZHXXq7qhOp1u1alVgYGBgYOCqVauk3TNrlxEZDIbw
+8PDw8HBpP9DaA5KsXdlkbc6mzB6iZGN31LTc0SWxdk0WlzL1wbl705NyA2CpuJSJ3wkBEEKA
+EAIghAAhBAghAEIIEEIAhBAghAAIITD4DGETDBiMBaUnhEskEIQQACEECCH6EAeE/Q4nZjg4
+BD0hQAgBsDsKDgvpCcFhIQgh6P0IIcghOCYEOaQnBEAIAUIIgBAChBAAIQQIIQBCCBBCAIQQ
+IIQACCFACAEQQoAQAiCEACEEQAgBQgiAEAKEEAAhBAghAEIIEEIAhBAghAAIIUAIARBCgBAC
+IIRA/8NDQh3GE+FBTwgQQgA9uG/FU84BekKAEAIghAAhBEAIAUIIgBACg87/AVCp0rHWOlPt
+AAAAAElFTkSuQmCC
+</d>
+<d name="1" mime-type="image/png" base64="yes">
+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
+mEwm6cgWi0WlUpnNZjd7Kdy92b7xCCEhdLXvTz/9FBQUVFVVJW9p1apVcXFx586dVSqVxWL5
+z6jmv59GRkZ+8cUXYWFhjmd0GkKFuzMmRIuzc+fOGTNm2HacZs2a9be//U0I0aFDh5ycHLmk
+3dOYmJgFCxbk5OSYTCadTjd16lT3J6rj7owJGRM22zFh3759Dxw4YLslMzOzX79+Vqs1OTnZ
+z89P3tfuqdlsTk1NjYyM9Pb27tOnT1pamvuRpMLdGRPSHW2JY0LQHQUIIQBCCBBCAIQQqLNG
+O1eDEII03uUYE0K0OI3tIxlCiGr+709MTNRqtV26dPn0009ff/11f3//kJCQr7/+WirgatrR
+V199NWDAAI1GExYW9u6777rZmJubO3nyZH9//3bt2k2cOPHq1avSdqPRGBMT4+/vHxAQsHHj
+xhpNdKqqqkpISAgNDdVqtcnJya4atDpOuSKEaCBXrlwpLCxMTEycPn365cuXL1y48PLLL8fH
+x0s/dTXt6Lnnnlu9evWNGze+/vrro0ePutk4ZcqU2NjY4uLioqKiwMDAlStXStsTExMLCwt1
+Ot3Jkye/+uoruT5KJjpt2LDh0KFDGRkZBQUFxcXFrn61Ok65qs+mGXxtzU2ZsrIyq9VqMBhs
+H3t7e7ufdhQcHJyamlpUVGR7NKcbbd28eTMoKEh63L1795ycHOnxmTNn5HoqmegUHh6u0+kc
+fxe7B3WcclVvLyLZI4Tuy7h/rNFopMUvVCqVEEKlUknbT5w4MWHCBH9//549e37++eduNh4/
+fnzEiBFarVaqjKenp7RdrVYbDAbpsV6vr/aMttRqtV6vrzaErg4lXHzHlRASwsYYwoiIiAsX
+Lrja3WKx7N69OyAgwM3GHj167Nixo6ysrKqqqqysTD6yq5bQ/RklPXv2VNISujqUqxBKc6/q
+HWNC1ImraUfTpk07e/ZsZWWl1MK42VheXt62bVtfX9/CwsKFCxfKR542bVp8fPzly5cvX74s
+D0GFsolOc+bMWbJkSUFBwfXr1+Pi4mpaeVfsplwxJqQlbBQtoatpRx9++GFERIRarb7//vsz
+MjLcbNyzZ09ERISXl1dISEhqaqp8ZL1ev3DhQq1W26lTp1dffdXLy0v5RCeTybRq1aqgoCCt
+Vrt582ZXLWEdp1wxlekOfobLVKbGJjs7e8KECQUFBc3yjUd3FI1XXFxcaWlpYWFhfHz8hAkT
+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
+XpDGw+P/PsSSH7gpA0KIGlAYG9JFdxQNJyoqKj09XXqcmZk5fvx4uc2U/3VsQp3+aPv27WFh
+YRqNZvDgwadPn5ZLpqSkBAcHq1QqIYTFYklMTOzWrVv79u3nzZtXXl4uFcvNzZ08ebK/v3+7
+du0mTpx49epVabvJZIqNjfX39w8ICNi0aVNz+x8RLY3T1/3UqVO9e/c2mUyVlZX3339/bm6u
+bUk3bxW7HwkhJkyYcOHChdu3b69du3bIkCHy9qeffrqkpER6mpycPHLkyIKCgmvXrs2cOTM+
+Pl7a3rdv34yMjIqKihs3bjz//PPz58+Xtr/88sujRo0qLi6+dOnS448/3pzeuvTmGRP+p9v5
+3HPP9e/fX6VSXblyZePGjbUbE3p4eFy5ciUgIEAIUVFR0aFDh4qKCmn7xYsXQ0NDpWK9evVK
+S0uLiIgQQvz0008PPfTQxYsX7Y78P//zP/fdd9+lS5eEEOHh4Z9++mnv3r2FEKdPn+7Tp0/z
+eevSLNASytLS0nr16hUSEpKTk2NXskYtodOnUhdU3q7RaDw9PT09PaXeqUqlkrYfP358xIgR
+Wq1Wen96enpK29VqtV6vlx7r9frm9NZlTIj/SElJiY+PX758udQMKvxIQPmnBbYlQ0JC8vLy
+qqqqzGaz1Wo1m83S9qlTp86ePVv6UVlZmbw9MDCwoKBAepyfn8+NGTRDmZmZpaWlc+fOXbx4
+8cmTJ3U6ne1PO3TokJOT43RHNz9yIyYmZsGCBTk5OSaTSafTTZ06VdpeXl7etm1bX1/fwsLC
+hQsXyuWnT58eFxdXUlJSUlKybNkybsygyXdHHd8Gw4YN27Vrl1TgwIEDo0ePtu1MJicn+/n5
+OX3D2P3ITXfUdrvZbE5NTY2MjPT29u7Tp09aWpq0fc+ePREREV5eXiEhIampqfJeBoMhOjpa
+q9V26tRJaqi5MQOA7ihACAEQQoAQAiCEACEEQAgBQgiAEAKEEAAhBAghAEIIEEIAhBAghAAI
+IUAIARBCgBACIIQAIQRACAFCCIAQAoQQACEECCEAQggQQgCEEGg0/hejg7oHMwx5TQAAAABJ
+RU5ErkJggg==
+</d>
+</data>
+</abiword>
