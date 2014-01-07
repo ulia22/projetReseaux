@@ -54,7 +54,6 @@ int main (int argc, char *argv[]) {
 //-------DEAMON-------------------------------------
 
 void* ecouteRequetes(void* arg) { //deamon
-printf("Test6\n");
     int desClient;
     pthread_t th;
     int sock = socket(PF_INET, SOCK_STREAM, 0);
@@ -73,7 +72,7 @@ printf("Test6\n");
         perror("erreur bind");
         exit(EXIT_FAILURE);
     }
-printf("Test5\n");
+
     if (listen(sock, MAX_CONNEXIONS) < 0) {
         perror("erreur listen");
     }
@@ -82,16 +81,10 @@ printf("Test5\n");
     socklen_t sizeAddCli = sizeof(addCli);
 
     while (1) {
-printf("Test8\n");
         desClient = accept((int)sock, (struct sockaddr *)&addCli, &sizeAddCli);
         if (desClient < 0) {
             perror("erreur accept");
         } else {
-            /*paramsThread params;
-            params.desCli = desClient;
-            params.cleFichier = arg;
-            pthread_create(&th, NULL, gestionConnexion, (void*)&params);*/
-printf("Nouvelle requete");
             pthread_create(&th, NULL, gestionConnexion, (void*)desClient);
         }
     }
@@ -109,14 +102,10 @@ void* gestionConnexion(void* arg) {
     if (recv(desCli, msg, MAX_MSG, 0) < 0) {
         perror ("erreur recv");
     } else {
-printf("Msg : %s\n", msg);
         char numMsg[4];
         char argm[1024];
-	char content[1024];
-	sscanf(msg,"%s %s %s", numMsg, argm, content);
-printf("numMsg: %s\n", numMsg);
-printf("argm : %s\n", argm);
-printf("content : %s\n", content);
+		char content[1024];
+
         if (strcmp("302", numMsg) == 0) { // as tu une partition de ce fichier
             if(possedeFichier(argm)) { // cle fichier en parametre
                 char rep[MAX_MSG] = "907";
@@ -142,13 +131,8 @@ printf("content : %s\n", content);
                 }
             }
         } else if(strncmp(numMsg, "600", 3) == 0) { // demande d'un pair de stockage d'une partition
-     printf("Argm : %s\n", argm);       
-//char* cleFichier = strtok(argm, " ");
-//printf("%s\n", cleFichier);
-            //char* contenu = strtok(NULL, " ");
-//printf("Contenu : %s\n", contenu);
-printf("Test3\n");
-            if (enregistrerPartition(argm, content) != 0) {
+
+            if (enregistrerPartition(argm, content)) {
                 char msgRecu[MAX_MSG] = "601";
                 if(send(desCli, msgRecu, strlen(msgRecu), 0) < 0) { //envoi du message 601 de confirmation de stockage de la partition
                     perror("erreur send");
@@ -314,7 +298,7 @@ void* obtenirPartition(void* arg) {
 
 void* exporterFichier(void* path) {
     char* nom = (char*)path;
-    char* partition = "";
+    char* metadata = "";
 
     int sock = socket(PF_INET, SOCK_STREAM, 0);
 
@@ -340,7 +324,6 @@ void* exporterFichier(void* path) {
         perror("erreur envoi");
         exit(EXIT_FAILURE);
     }
-    printf("200 envoye");
 
     char msgListePairs[MAX_MSG];
     if (recv(sock, msgListePairs, MAX_MSG, 0) < 0) {
@@ -348,22 +331,18 @@ void* exporterFichier(void* path) {
         exit(EXIT_FAILURE);
     }
 
-
-    printf("MSg liste pair: %s\n", msgListePairs);
-
     char* codeMsg = strtok(msgListePairs, " ");
     if (strcmp(codeMsg, "201") == 0) { //liste des connectes
+
         char* cleFichier = strtok(NULL, " "); //cle fichier génèrer par le serveur
         char* pairs = strtok(NULL, " ");
-        printf ("%s\n", cleFichier);
-        printf("%s\n", pairs);
-        ListePair *listeP = getListePairFichier(pairs);
-        printf("%s", listeP->prem->data);
+        ListePair *listeP = getListePairFichier(pairs);;
         int envoye = 0;
-        char* ip;
-        char* port;
+        char *ip = "";
+        char *port = "";
         Pair *p = listeP->prem;
-        while(p->suiv != NULL && !envoye) {
+        do {
+
             ip = strtok(p->data, "/");
             port = strtok(NULL, "/");
 
@@ -371,19 +350,20 @@ void* exporterFichier(void* path) {
             addPair.sin_family = AF_INET;
             addPair.sin_addr.s_addr = inet_addr(ip);
             addPair.sin_port = ntohs(atoi(port));
-
-            partition = envoyerPartition(cleFichier, path, addPair);
-            if(partition != NULL) {
+            metadata = envoyerPartition(cleFichier, path, addPair);
+            if(metadata != NULL) {
                 envoye = 1; //fichier envoye
             } else { //echec, on passe a un autre pair
                 p = p->suiv;
             }
-        }
+
+        } while(p->suiv != NULL && !envoye);
 
         if(envoye) {
             //on previens le serveur d'un nouveau metadata et on lui envoie
+
             char msgMetaData[MAX_MSG] = "202 ";
-            strcat(msgMetaData, partition);
+            strcat(msgMetaData, metadata);
             if (send(sock, msgMetaData, strlen(msgMetaData), 0) < 0) {
                 perror("erreur envoi");
                 exit(EXIT_FAILURE);
@@ -412,16 +392,13 @@ void* exporterFichier(void* path) {
     return 1 si succes, 0 sinon
 */
 int enregistrerPartition(char* cleFichier, char* contenu) {
-printf("Test2\n");
     FILE *f = NULL;
     char fileName [256];
     memset(fileName, 0, 256);
     strcat(fileName, cleFichier);
     strcat(fileName, ".part");
     f = fopen(fileName, "w");
-printf("File name : %s\n", fileName);
     if (f != NULL) {
-printf("Test1\n");
         fprintf(f, "%s",contenu);
         fclose(f);
         return 1;
@@ -453,23 +430,26 @@ char* envoyerPartition(char* cleFichier, char* path, struct sockaddr_in add) {
     strcat(msgPartition, cleFichier);
     strcat(msgPartition, " ");
     strcat(msgPartition, contenu);
+    printf("msgPartition %s\n",msgPartition);
+    free(contenu);
 
     if (send(sock, msgPartition, strlen(msgPartition), 0) < 0) { //envoi du message envoi d'une partition a stocker
         perror("erreur envoi");
         exit(EXIT_FAILURE);
     }
-
     char rep[MAX_MSG];
     if (recv(sock, rep, MAX_MSG, 0) < 0) {
             perror("erreur reception");
             exit(EXIT_FAILURE);
     }
     if (strcmp(rep, "601") == 0) {
+        char* md = creerMetaData(add);
         if (close(sock) < 0) {
             perror("erreur close");
             exit(EXIT_FAILURE);
         }
-        return creerMetaData(add); //succes
+
+        return md;//succes
     } else if (strcmp(rep, "602") == 0) {
         if (close(sock) < 0) {
             perror("erreur close");
@@ -483,34 +463,27 @@ char* envoyerPartition(char* cleFichier, char* path, struct sockaddr_in add) {
     creer et retourne metadata de la forme <numero de la parition> <ip> <port>\n
 */
 char* creerMetaData(struct sockaddr_in add) {
-    char* metadata = "";
-    strcat(metadata, "1 "); //numero de la partition: forcé a 1 pour le moment
-    strcat(metadata, (const char*)add.sin_addr.s_addr);
-    strcat(metadata, " ");
-    strcat(metadata, (const char*)add.sin_port);
-    strcat(metadata, "\n");
 
+    char* metadata = malloc(sizeof(char) * MAX_MSG);
+    memset(metadata, 0, MAX_MSG);
+    sprintf(metadata, "1 %s %d\n", inet_ntoa(add.sin_addr), ntohs(add.sin_port));
     return metadata;
 }
 
 char* getFichier(char* path) {
-    char* contenu = malloc(sizeof(MAX_MSG));
-
+    char* contenu = malloc(sizeof(char) * MAX_MSG);
+    memset(contenu, 0, MAX_MSG);
     FILE *f = NULL;
     f = fopen(path, "r");
 
-
+    char tmp;
     if (f != NULL) {
-        char tmp[8] = "";
-        int car = 0;
-        do {
-            car = fgetc(f);
-            sprintf(tmp,"%d", car);
-            strcat(contenu, tmp);
-            tmp[0] ='\0';
-
-        } while (car != EOF);
-
+        int car = 0, i = 0;
+        while((car = fgetc(f)) != EOF){
+            contenu[i] = car;
+            i++;
+        }
+        contenu[i] = '\0';
         fclose(f);
     }
     return contenu;
@@ -550,7 +523,6 @@ ListePair* getListePairFichier(char* metadata) {
     pair->data = str;
     pair->suiv = NULL;
     pairs->prem = pair;
-    printf("debut\n");
     while (str != NULL) {
         printf ("%s\n", str);
         Pair *p = pairs->prem;
@@ -672,7 +644,6 @@ void initConnexion(char* ip, char* port) {
     in.s_addr = ipp;
     char* cip = inet_ntoa(in);
 
-    printf("Votre ip: %s\n", cip);
 
     char msg[MAX_MSG] = "100 ";
 
@@ -733,7 +704,6 @@ void initConnexion(char* ip, char* port) {
                 perror("erreur reception");
                 exit(EXIT_FAILURE);
             }
-            printf("msgcle: %s", msgNewCle);
 
             //nouvelle clé envoyée
             char* codeMsg = strtok (msgNewCle, " ");
