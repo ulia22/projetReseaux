@@ -14,4 +14,3 @@ struct ParamPartition {
     struct sockaddr_in add;
     char* cleFichier;
 };
-int port_client;

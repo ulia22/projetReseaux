@@ -34,12 +34,13 @@ int extractIpPort(char* msg, char* port, char* ip);
 int initListeningSocket(void);
 
 extern pair* ptrPair;
+
 /*
  * 
  */
 int main(int argc, char** argv) {
     printf("Server is running...\n");
-    init();    
+    init();
     initFileData();
     //Definition des variables pour ouvrir les connections.
     int sdServerAccept;
@@ -62,30 +63,28 @@ void *manageClient(void* par[]) {
     struct sockaddr_in client_addr = ((acceptThreadArg*) par)->pair;
     char buffer[MSG_BUFFER_SIZE];
     int ret = 0;
-    
-    printf("sock: %d\n", sdClient);
+
     while (strncmp(buffer, "909", 3) != 0) {
 
         //Lecture du code du message.
         memset(buffer, 0, MSG_BUFFER_SIZE);
         ret = recv(sdClient, buffer, 3, 0);
-        if(ret <= 0){
+        if (ret <= 0) {
             strcat(buffer, "909");
         }
-        
-        printf("Buffer: %s\n", buffer);
+
         if (strncmp(buffer, "100", 3) == 0) {//Nouveau client
             if (initClientConnect(sdClient, client_addr) != 0) {
                 printf("Erreur initClientConnect.\n");
                 exit(EXIT_FAILURE);
             }
         } else if (strncmp(buffer, "200", 3) == 0) {//Partage d'un fichier
-           if(shareFile(sdClient, client_addr) != 0){
-            printf("Erreur partage fichier.\n");
-            exit(EXIT_FAILURE);
-           }
+            if (shareFile(sdClient, client_addr) != 0) {
+                printf("Erreur partage fichier.\n");
+                exit(EXIT_FAILURE);
+            }
         } else if (strncmp(buffer, "300", 3) == 0) {//DL d'un fichier
-            if(dlFile(sdClient, client_addr) != 0){
+            if (dlFile(sdClient, client_addr) != 0) {
                 printf("Erreur DL fichier.\n");
                 exit(EXIT_FAILURE);
             }
@@ -126,7 +125,7 @@ int initListeningSocket(void) {
     memset(&server_addr, 0, sizeof (struct sockaddr_in));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
-    server_addr.sin_addr.s_addr=htonl(INADDR_ANY);
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     //inet_aton(ADDR_SERVER, &server_addr.sin_addr.s_addr);
 
     //Lie la socket server à une adresse ip et un port.

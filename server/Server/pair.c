@@ -35,7 +35,6 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
     char* addrIp = NULL;
     addrIp = (char *) inet_ntoa(client_addr.sin_addr.s_addr);
     int port = atoi(res[4]);
-    printf("Pair connecté à l'addresse: %s , et au port: %u.\n", addrIp, port);
     freeExtract(res, 5);
 
     //Envoi message ok.
@@ -46,7 +45,6 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
         perror("Message can't be sent.\n");
         pthread_exit(NULL);
     }
-    printf("Message sent.\n");
 
     //Reception messages suivant.
     memset(buffer, '\0', MSG_BUFFER_SIZE);
@@ -56,16 +54,8 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
         //TO DO fonction pour ajouter une correspondance cléPair ip.
         res = NULL;
         res = extract(buffer, PATTERN_CLE_PAIR);
-        int j;
-        for (j = 0; j < 3; j++) {
-            printf("Pour j=%d res = %s\n", j, res[j]);
-        }
+
         addPair(res[2], addrIp, port);
-        if (ptrPair != NULL) {
-            printf("Correspondance ajoutée:\nClé: %d \nIP: %s \nPort: %d \nPrev: %p \nNext: %p \n", (ptrPair->clePair), ptrPair->addrPair, (ptrPair->portPair), ptrPair->prev, ptrPair->next);
-        } else {
-            printf("ptrPair est NULL");
-        }
         freeExtract(res, 3);
 
         memset(buffer, 0, strlen(buffer));
@@ -74,12 +64,11 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
 
     } else if (strncmp(buffer, "102", 3) == 0) {
         int key = getNewClePair();
-        printf("Message recu : %s\n", buffer);
+        
         char keys[10];
         memset(keys, 0, 10);
         sprintf(keys, "%d", key);
         addPair(keys, addrIp, port);
-        printf("Clé pair existante : %d.\n", ptrPair->clePair);
 
         memset(buffer, 0, strlen(buffer));
         sprintf(buffer, "103 %d", key);
@@ -87,7 +76,6 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
 
         memset(buffer, 0, strlen(buffer));
         recv(sdClient, buffer, MSG_BUFFER_SIZE - 1, 0);
-        printf("last message: %s\n", buffer);
     }
     return 0;
 }
@@ -101,23 +89,26 @@ int initClientConnect(int sdClient, struct sockaddr_in client_addr) {
 int shareFile(int sdClient, struct sockaddr_in client_addr) {
     char buffer[MSG_BUFFER_SIZE];
     char* addrIp = NULL;
-    int port = 0, totalLenght = 0;
+    char **res = NULL;
+    int cle = 0, totalLenght = 0;
     pair* curPtr = NULL;
     char* addrFile = NULL;
     int newCleFile = 0;
 
     addrIp = (char *) inet_ntoa(client_addr.sin_addr.s_addr);
-    port = ntohs(client_addr.sin_port);
 
     memset(buffer, 0, MSG_BUFFER_SIZE);
-    recv(sdClient, buffer, MSG_BUFFER_SIZE, 0);
-    printf("Test\n");
+    recv(sdClient, buffer, 1, 0);//On enleve l'espace
+    memset(buffer, 0, MSG_BUFFER_SIZE);
+    recv(sdClient, buffer, MSG_BUFFER_SIZE, 0);//On lit le cleClient
+    
+    cle = atoi(buffer);
+    
     //Préparation du message de retour.
     //envoi message "201 newCleFile "+"addr/port\n"....
     //On calcule d'abord la longueur totale du message, que l'on stocke dans totalLenght.
     for (curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next) {
-        printf("Liste addr ip stockés : %s\n", curPtr->addrPair);
-        if (strcmp(curPtr->addrPair, addrIp) != 0) {
+        if (curPtr->clePair != cle) {
             totalLenght += strlen(curPtr->addrPair); //Longueur de cette addresseIp
             totalLenght++; // le "/" pour séparateur.
             memset(buffer, 0, MSG_BUFFER_SIZE);
@@ -145,8 +136,7 @@ int shareFile(int sdClient, struct sockaddr_in client_addr) {
     strcat(addrFile, buffer);
     strcat(addrFile, " ");
     for (curPtr = ptrPair; curPtr != NULL; curPtr = curPtr->next) {
-        if (strcmp(curPtr->addrPair, addrIp) != 0) {
-            printf("Addresse envoyée dans un 201 : %s\n", curPtr->addrPair);
+        if (curPtr->clePair != cle) {
             strcat(addrFile, curPtr->addrPair); //addresseIp
             strcat(addrFile, "/"); // "/" séparateur.
             memset(buffer, 0, MSG_BUFFER_SIZE);
@@ -156,7 +146,6 @@ int shareFile(int sdClient, struct sockaddr_in client_addr) {
         }
     }
 
-    printf("AddrFile : %s\n", addrFile);
 
     send(sdClient, addrFile, totalLenght, 0);
     free(addrFile);
@@ -164,11 +153,10 @@ int shareFile(int sdClient, struct sockaddr_in client_addr) {
     //Reception du fichier de meta-data de retour.
     memset(buffer, 0, MSG_BUFFER_SIZE);
     recv(sdClient, buffer, 4, 0);
-
-    if (strncmp(buffer, "202", 3)) {//On recois le nouveau message de demande d'envoi des metadata.  
+    if (strncmp(buffer, "202 ", 3) == 0) {//On recois le nouveau message de demande d'envoi des metadata. 
         newMetaDataFile(newCleFile, sdClient); //On sauve le nouveau metadata envoyé sur le server.
-
         memset(buffer, 0, MSG_BUFFER_SIZE);
+        
         sprintf(buffer, "901 ");
     }
 
@@ -199,7 +187,7 @@ int dlFile(int sdClient, struct sockaddr_in client_addr) {
     if (metaFileExist(res[2]) == 1) {//Si le fichier existe, on recupère le contenu et on l'envoi.
         sendMetaFile(sdClient, res[2], "301 ");
     }
-
+    freeExtract(res, 3);
     return 0;
 }
 
@@ -319,9 +307,7 @@ int addPair(const char* clePair, const char* ip, const int port) {
         ptrPair = (pair*) malloc(sizeof (struct pair));
 
         ptrPair->clePair = cle;
-        printf("Test2\n");
         ptrPair->addrPair = malloc(sizeof (char) * (strlen(ip) + 1));
-        printf("Test3\n");
         strcpy(ptrPair->addrPair, ip);
 
         ptrPair->portPair = port;

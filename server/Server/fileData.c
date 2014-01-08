@@ -24,6 +24,7 @@
 
 #define MAX_BUFFER_LENGHT 1024
 extern pair* ptrPair;
+
 /**
  * 
  * @return 
@@ -48,13 +49,13 @@ int initFileData() {
         strcat(clePairPath, "/");
         strcat(clePairPath, LAST_CLE_PAIR);
 
-        err = open(clePairPath, O_CREAT|O_RDWR|O_SYNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-        if(err == -1){
+        err = open(clePairPath, O_CREAT | O_RDWR | O_SYNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+        if (err == -1) {
             perror("Open error\n");
             exit(EXIT_FAILURE);
         }
         close(err);
-        
+
         FILE* file = fopen(clePairPath, "a+");
         if (file == NULL) {
             perror("Fopen erreur.\n");
@@ -70,13 +71,13 @@ int initFileData() {
         strcat(cleFilePath, "/");
         strcat(cleFilePath, LAST_CLE_FILE);
 
-        err = open(cleFilePath, O_CREAT|O_RDWR|O_SYNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-        if(err == -1){
+        err = open(cleFilePath, O_CREAT | O_RDWR | O_SYNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+        if (err == -1) {
             perror("Open error\n");
             exit(EXIT_FAILURE);
         }
         close(err);
-        
+
         FILE* file = fopen(cleFilePath, "a+");
         if (file == NULL) {
             perror("Fopen erreur.\n");
@@ -95,7 +96,7 @@ int initFileData() {
  * @param sdClient
  * @return 
  */
-int newMetaDataFile(int idFile, int sdClient){
+int newMetaDataFile(int idFile, int sdClient) {
     char pathToNewFile[256];
     FILE* metaFile;
     char buffer[MAX_BUFFER_LENGHT], tmp[256];
@@ -107,31 +108,29 @@ int newMetaDataFile(int idFile, int sdClient){
     strcat(pathToNewFile, "./");
     strcat(pathToNewFile, META_DATA_DIR);
     strcat(pathToNewFile, "/");
-    
+
     //Deuxième partie du path
     sprintf(tmp, "%d", idFile);
     strcat(pathToNewFile, tmp);
 
     //Ouverture du fichier en écriture
     metaFile = fopen(pathToNewFile, "w");
-    if(metaFile == NULL){
+    if (metaFile == NULL) {
         perror("Erreur open newMetaDataFile.");
         pthread_exit(NULL);
     }
-    
     //Lecture du stream socket;
-    do{
+    do {
         read = 0;
         memset(buffer, 0, MAX_BUFFER_LENGHT);
         read = recv(sdClient, buffer, MAX_BUFFER_LENGHT, 0);
-        
         //Sauvegarde dans file
         fprintf(metaFile, "%s", buffer);
-    }while(read == MAX_BUFFER_LENGHT - 1);
-    
+    } while (read == MAX_BUFFER_LENGHT - 1);
+    printf("test4\n");
     //femeture du fichier
     fclose(metaFile);
-    
+
     return 0;
 }
 
@@ -141,43 +140,43 @@ int newMetaDataFile(int idFile, int sdClient){
  * @param parentDir
  * @return  0 si ok sinon -1
  */
-int sendMetaFile(int sdClient, char *name, char *prefix){
+int sendMetaFile(int sdClient, char *name, char *prefix) {
     char path[256], buffer[MAX_BUFFER_LENGHT];
     FILE* file;
     int read, totalLenght;
     char *fileC;
-    
+
     memset(path, 0, 256);
     sprintf(path, "./%s/%s", META_DATA_DIR, name);
-    
+
     file = fopen(path, "r");
     
     //Calcul de la longueur du fichier.
     totalLenght = 0;
     totalLenght += strlen(prefix);
-    do{
+    do {
         read = 0;
         memset(buffer, 0, MAX_BUFFER_LENGHT);
-        read = strlen(fgets(buffer, MAX_BUFFER_LENGHT , file));
+        read = strlen(fgets(buffer, MAX_BUFFER_LENGHT, file)); //Modified
         totalLenght += read;
-                
-    }while(read == (MAX_BUFFER_LENGHT - 1));
-   totalLenght ++; // '\0'
-    
+
+    } while (read == (MAX_BUFFER_LENGHT - 1));
+    totalLenght++; // '\0'
+
     //Reservation de la mémoire
-    fileC = malloc(sizeof(char) * totalLenght);
-    
+    fileC = malloc(sizeof (char) * totalLenght);
+    memset(fileC, '\0', sizeof (char) * totalLenght);
     strcat(fileC, prefix);
-    
+
     //Sauvegarde du fichier dans un char* fileC
     rewind(file);
-    do{
+    do {
         read = 0;
         memset(buffer, 0, MAX_BUFFER_LENGHT);
-        read = strlen(fgets(buffer, MAX_BUFFER_LENGHT , file));
-        strcat(fileC, buffer);                
-    }while(read == (MAX_BUFFER_LENGHT - 1));
-    
+        read = strlen(fgets(buffer, MAX_BUFFER_LENGHT, file));
+        strcat(fileC, buffer);
+    } while (read == (MAX_BUFFER_LENGHT - 1));
+
     //envoi du fichier sur la socket
     send(sdClient, fileC, strlen(fileC), 0);
     return 0;
@@ -191,9 +190,9 @@ int sendMetaFile(int sdClient, char *name, char *prefix){
 int genererDIR(const char* dirName, const char* parentDir) {
     //Initialisation du dossier contenant la liste des meta-data
     //On regarde si le dossier existe
-    
+
     umask(~(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH));
-        struct stat buf;
+    struct stat buf;
     //memset(stat,0, sizeof(buf));
     struct dirent *lecture;
     DIR *rep;
@@ -215,12 +214,12 @@ int genererDIR(const char* dirName, const char* parentDir) {
             perror("Erreur création du repertoire des meta-data.");
             exit(EXIT_FAILURE);
         }
-         stat(path, &buf);
+        stat(path, &buf);
         printf("Permissions:%d\n", buf.st_mode);
     }
     closedir(rep);
-   
-    
+
+
 }
 
 /**
@@ -247,9 +246,9 @@ int fileExist(char* fileName, char* pathParent) {
  * @param fileName
  * @return 1 si oui 0 si non
  */
-int metaFileExist(char* fileName){
+int metaFileExist(char* fileName) {
     char pathParent[256];
-    
+
     memset(pathParent, 0, 256);
     sprintf(pathParent, "%s%s", "./", META_DATA_DIR);
 
@@ -260,19 +259,19 @@ int metaFileExist(char* fileName){
  * Cré une clePair unique à partir du fichier LAST_CLE_PAIR qui contient la dernière clé créée.
  * @return 
  */
-int getNewClePair(void){
+int getNewClePair(void) {
     FILE* fd;
     char buffer[10];
     memset(buffer, 0, 10);
     char path[256];
-    memset(path,0,256);
+    memset(path, 0, 256);
     strcat(path, "./");
     strcat(path, PERSISTENT_DATA_DIR);
     strcat(path, "/");
     strcat(path, LAST_CLE_PAIR);
-    
+
     fd = fopen(path, "r");
-    if(fd == NULL){
+    if (fd == NULL) {
         perror("Open file getNewClePair");
         exit(EXIT_FAILURE);
     }
@@ -280,9 +279,9 @@ int getNewClePair(void){
     fclose(fd);
     int cle = atoi(buffer);
     ++cle;
-    
+
     fd = fopen(path, "w");
-    if(fd == NULL){
+    if (fd == NULL) {
         perror("Open file getNewClePair");
         exit(EXIT_FAILURE);
     }
@@ -297,19 +296,19 @@ int getNewClePair(void){
  * Crée une cleFile unique à partir du fichier LAST_CLE_FILE qui contient la dernière clé créée.
  * @return la dernière clé créer.
  */
-int getNewCleFile(){
+int getNewCleFile() {
     FILE* fd;
     char buffer[10];
     memset(buffer, 0, 10);
     char path[256];
-    memset(path,0,256);
+    memset(path, 0, 256);
     strcat(path, "./");
     strcat(path, PERSISTENT_DATA_DIR);
     strcat(path, "/");
     strcat(path, LAST_CLE_FILE);
-    
+
     fd = fopen(path, "r");
-    if(fd == NULL){
+    if (fd == NULL) {
         perror("Open file getNewCleFile");
         exit(EXIT_FAILURE);
     }
@@ -318,9 +317,9 @@ int getNewCleFile(){
     fclose(fd);
     int cle = atoi(buffer);
     ++cle;
-    
+
     fd = fopen(path, "w");
-    if(fd == NULL){
+    if (fd == NULL) {
         perror("Open file getNewCleFile");
         exit(EXIT_FAILURE);
     }

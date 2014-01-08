@@ -1,34 +1,36 @@
+Connexion initiale au server:
 
-Connection initiale au server:
-
-100 monAddrIP/Port	"Je suis un pair et je suis connecté à cette addr"
-101 cléPair		"Voilà ma clé unique en tant que pair"
-102			"Je suis un nouveau Pair, je n'ai pas de clé client"
-103 cléPair		"Voila votre cléPair unique à conserver"
+100 monAddrIP/Port	"Je suis un pair et je suis connecté à cette addrIp."
+101 cléPair			"Voilà ma clé unique en tant que pair".
+102				"Je suis un nouveau Pair, je n'ai pas de clé client."
+103 cléPair			"Voila votre cléPair unique à conserver."
 
 Envoi de données:
-200			"Donne moi la liste des pair qui peuvent recevoir des données"
-201 addrServer/port\n..."Je t'envoi la liste des pairs après le code '201 '"
-202			"Demande d'envoi d'un nouveaux fichier Meta-data"
-203			"Peux-tu recevoir un fichier"
+200			"Donne moi la liste des pair qui peuvent recevoir des données."
+201 cléFichier addrServer/port\n..."Je t'envoi la liste des pairs après le code '201 '."
+202			"Je t'envoie le fichier metat-data après le code '202 ' ."
+203			"Peux-tu recevoir un fichier."
 
-Telecharger un fichier:
-300 cléFichier		"Donne moi la liste des addrIP des pair ayant une partition de ce fichier"
-301 fichierMeta-data	"Je t'envoi la liste des pair ayant un bout de ce fichier"
-302 cléFichier		"As-tu une partition de ce fichier?"
-304 cléFichier cléPair	"Le pair cléPair n'as plus la partition du fichier cléFichier"
+Télécharger un fichier:
+300 cléFichier		"Donne moi la liste des addrIP des pairs ayant une partition de ce fichier."
+301 fichierMeta-data	"Je t’envoie la liste des pairs ayant un bout de ce fichier. "
+302 cléFichier		"As-tu une partition de ce fichier ?"
+304 cléFichier cléPair	"Le pair cléPair n'as plus la partition du fichier cléFichier."
+305			"Donne moi la liste des partition à télécharger."
 
 Mise à jour meta-data
-400 cleFichier/Part\n..."Je t'envoi la liste des partition que j'ai pour mettre tes données à jour"
+ :
+400 cleFichier/Part\n..."Je t’envoie la liste des partitions que j'ai pour mettre tes données à jour."
+
 
 
 Message généraux:
-901			"Ok"
-902			"Refus"
-903 addrServer/port	"Refus je t'envoi les explication dans un fichier sur ce socket"
-904			"Reçu"
-905			"Envoi terminé"
-906			"Toujours connecté?"
-907			"Oui"
-908			"Non"
-909			"Fermeture de la connection."
+901				"Ok"
+902				"Refus"
+903 addrServer/port	"Refus je t’envoie les explications dans un fichier sur ce socket"
+904				"Reçu"
+905				"Envoi terminé"
+906				"Toujours connecté?"
+907				"Oui"
+908				"Non"
+909				"Fermeture de la connexion."

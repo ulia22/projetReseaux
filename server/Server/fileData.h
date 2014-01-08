@@ -14,7 +14,7 @@ extern "C" {
 int initFileData();
 int getNewClePair(void);
 int sendMetaFile(int sdClient, char *name, char *prefix);
-
+int newMetaDataFile(int idFile, int sdClient);
 #ifdef	__cplusplus
 }
 #endif

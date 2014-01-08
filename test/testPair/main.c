@@ -47,24 +47,39 @@ int main(int argc, char** argv) {
         exit(errno);
     }
 
-    char msg[100] = "100 127.0.0.1/44444";
+    char msg[100] = "100 127.0.0.1/44443";
     send(sock, msg, strlen(msg), 0);
     
     memset(msg, 0, strlen(msg));
     recv(sock, msg, 100, 0);
-    printf("Valeur ok (901):%s\n", msg);
+    printf("Valeur ok retour message 100 (901):%s\n", msg);
     
     memset(msg, 0, strlen(msg));
-    strcat(msg, "102");
+    strcat(msg, "101 12");
+    printf("envoi 10 12\n", msg);
     send(sock, msg, strlen(msg), 0);
     
     memset(msg, 0, strlen(msg));
     recv(sock, msg, 100, 0);
-    printf("Message recu (ok  ): %s\n", msg);
+    printf("Message  retour message ok 101): %s\n", msg);
     
+    //Send upload file
     memset(msg, 0, strlen(msg));
-    strcat(msg, "901");
+    strcat(msg, "200");
+    printf("Envoi message 200:  %s\n", msg);
     send(sock, msg, strlen(msg), 0);
+    
+    //Recois un 201 sans addrIP
+    memset(msg, 0, strlen(msg));
+    recv(sock, msg, 100, 0);
+    printf("Message recu (201 vide  ): %s\n", msg);
+    
+    //Envoi fichier meta-data après code '202 '
+     memset(msg, 0, strlen(msg));
+    strcat(msg, "202 4 1.1.1.1/55555\n1.2.2.2/66666\n");
+    printf("Envoie message 202 fichier meta-data: %s\n", msg);
+    send(sock, msg, strlen(msg), 0);
+    
     while(1){
         
          
